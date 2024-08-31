@@ -22,7 +22,7 @@ function Footer() {
         </div>
         <div className="max-sm:flex hidden max-sm:px-6">
           <h1
-            className={`${imfell400.className} text-8xl max-sm:text-8xl max-sm:text-center text-[#EAE5DA] tracking-[0.05]`}
+            className={`${imfell400.className} text-8xl max-[400px]:text-6xl max-sm:text-8xl max-sm:text-center text-[#EAE5DA] tracking-[0.05]`}
             style={{
               textShadow: "1 7px 0px #372400",
               color: "transparent",
@@ -69,11 +69,11 @@ function Footer() {
           </p>
         </div>
 
-        <div className="items-center h-[45px] mb-20 bg-contain bg-no-repeat bg-[url(/images/addressFrame.png)] hidden max-sm:flex">
+        <div className="items-center max-[400px]:h-[37px] h-[45px] mb-20 bg-contain bg-no-repeat bg-[url(/images/addressFrame.png)] hidden max-sm:flex">
           <div className="flex items-center justify-center px-8">
             <LucideClipboard color="white" />
             <p
-              className={`text-white font-bold text-center text-base ${imfell400.className} text-[#EAE5DA]`}
+              className={`text-white font-bold text-center text-base max-[400px]:text-[0.9rem] max-[350px]:text-xs ${imfell400.className} text-[#EAE5DA]`}
             >
               0x5de758bba013e58dae2693aea3f0b12b31a3023d
             </p>
@@ -81,7 +81,7 @@ function Footer() {
         </div>
 
         <div
-          className={`max-sm:flex hidden max-sm:px-8 px-60 text-center ${imfell400.className} text-white text-sm absolute bottom-32`}
+          className={`max-sm:flex max-[400px]:bottom-16 hidden max-sm:px-8 px-60 text-center ${imfell400.className} text-white text-sm absolute bottom-32`}
         >
           <p>
             Lorem ipsum dolor sit amet consectetur. Sagittis aliquam lacinia

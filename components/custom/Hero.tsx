@@ -10,16 +10,18 @@ function Hero() {
   const handleMenuOpen = ()=>{
     setIsNavMenuOpen(true);
   }
+
+  
   return (
     <div
       className={`bg-[url(/images/heroBG.png)] h-[95vh] bg-cover bg-no-repeat max-sm:bg-center`}
     >
       <div className="h-full justify-end flex pl-20 flex-col gap-6 max-sm:justify-center max-sm:px-4 max-sm:items-center">
-      <div className="hidden absolute top-24 max-sm:flex items-center h-[45px] mb-20 bg-contain bg-no-repeat bg-[url(/images/addressFrame.png)]">
-          <div className="flex items-center justify-center px-8">
+      <div className="hidden absolute top-24 max-[400px]:top-16 max-sm:flex items-center h-[45px] mb-20 bg-contain bg-no-repeat bg-[url(/images/addressFrame.png)] max-[400px]:h-[37px]">
+          <div className="flex items-center justify-center px-8 h-full w-full">
             <LucideClipboard color="white" />
             <p
-              className={`text-white font-bold text-center text-base ${imfell400.className} text-[#EAE5DA]`}
+              className={`text-white font-bold text-center text-base max-[400px]:text-[0.9rem] max-[350px]:text-xs ${imfell400.className} text-[#EAE5DA] `}
             >
               0x5de758bba013e58dae2693aea3f0b12b31a3023d
             </p>
@@ -27,7 +29,7 @@ function Hero() {
         </div>
         <div>
           <h1
-            className={`${ringbearer.className} text-7xl text-[#EAE5DA] tracking-[0.05] max-sm:text-8xl`}
+            className={`${ringbearer.className} text-[#EAE5DA] tracking-[0.05] text-7xl`}
             style={{
               textShadow: "1px 7px 0px #372400",
               color: "transparent",
@@ -39,7 +41,7 @@ function Hero() {
         </div>
         <div className="max-sm:text-2xl max-sm:w-full  max-sm:text-center max-sm:mt-4">
           <p
-            className={`max-md:truncate max-sm:text-wrap leading-6 max-sm:leading-7 text-white ${imfell400.className} max-sm:text-`}
+            className={`max-md:truncate max-sm:text-wrap leading-6 max-sm:leading-7 text-white ${imfell400.className} max-sm:text-xl`}
           >
             Lorem ipsum dolor sit amet consectetur. Sagittis aliquam lacinia
             enim at enim tempor lacinia lobortis cras.
@@ -145,11 +147,11 @@ function Hero() {
       <button className="max-sm:hidden h-20 w-20 justify-center items-center rounded-full bg-[#F7F1E9] border border-[#D2BFA1] absolute right-10 bottom-[10%] z-10 hidden max-lg:flex">
         <LucidePlay color="#502A29" size={35} strokeWidth={3} fill="#502A29"/>
       </button>
-      <div className="hidden gap-4 absolute right-4 top-6 z-10 max-sm:flex">
-        <button className="h-12 w-12 hidden justify-center items-center rounded-full bg-[#F7F1E9] border border-[#D2BFA1] max-sm:flex">
+      <div className="hidden gap-4 absolute right-4 top-6 max-[400px]:top-3 z-10 max-sm:flex">
+        <button className="h-12 w-12 max-[400px]:h-10 max-[400px]:w-10 hidden justify-center items-center rounded-full bg-[#F7F1E9] border border-[#D2BFA1] max-sm:flex">
           <LucidePlay color="#502A29" strokeWidth={3} fill="#502A29"/>
         </button>
-        <button onClick={handleMenuOpen} className="h-12 w-12 hidden justify-center items-center rounded-full bg-[#F7F1E9] border border-[#D2BFA1] max-sm:flex">
+        <button onClick={handleMenuOpen} className="h-12 w-12 max-[400px]:h-10 max-[400px]:w-10 hidden justify-center items-center rounded-full bg-[#F7F1E9] border border-[#D2BFA1] max-sm:flex">
           <LucideMenu color="#502A29" strokeWidth={3}/>
         </button>
       </div>
