@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import LoadingPage from "@/components/custom/LoadingPage";
 import { loadingPageStore } from "@/store";
 import { useGSAP } from "@gsap/react";
@@ -7,11 +7,11 @@ import { useEffect } from "react";
 gsap.registerPlugin(useGSAP);
 
 const LandingLayout = ({ children }: { children: React.ReactNode }) => {
-  const {isLoadingPageDone} = loadingPageStore();
-  
+  const { isLoadingPageDone } = loadingPageStore();
+
   return (
     <main className="h-full overflow-auto">
-      {isLoadingPageDone ? children : <LoadingPage/>}
+      {isLoadingPageDone ? children : <LoadingPage />}
     </main>
   );
 };

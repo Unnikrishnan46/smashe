@@ -11,7 +11,7 @@ import { gsapAnimationStore } from "@/store";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-// import "@/components/custom/particles.css";
+import "@/components/custom/particles.css";
 import ParticlesOverlay from "@/components/custom/ParticlesOverlay";
 import { useGlobalAudioPlayer } from "react-use-audio-player";
 

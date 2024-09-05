@@ -74,7 +74,7 @@ function Hero({ playing, pause, play }: props) {
         scaleX: 0,
         transformOrigin: "left",
       },
-      "8"
+      "7"
     );
 
     homePageAnimationTl.from(
@@ -83,7 +83,7 @@ function Hero({ playing, pause, play }: props) {
         y: -50,
         opacity: 0,
       },
-      "8"
+      "7"
     );
 
     homePageAnimationTl.from(
@@ -92,7 +92,7 @@ function Hero({ playing, pause, play }: props) {
         y: -50,
         opacity: 0,
       },
-      "8"
+      "7"
     );
 
     homePageAnimationTl.from(
