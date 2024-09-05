@@ -43,7 +43,7 @@ export default function Home() {
 
   return (
     <div className="h-full" ref={homePageRef}>
-      {/* <ParticlesOverlay /> */}
+      <ParticlesOverlay />
       <HomeNavbar playing={playing} pause={pause} play={play}/>
       <Hero playing={playing} pause={pause} play={play}/>
       <About />
