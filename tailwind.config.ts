@@ -18,6 +18,10 @@ const config = {
       },
     },
     extend: {
+      backgroundSize: {
+        'custom': '100% 60%',
+        'customfull':'100% 100%'
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

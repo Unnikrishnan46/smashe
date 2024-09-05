@@ -27,12 +27,13 @@ function NavigationMenu() {
   return (
     <Dialog open={isNavMenuOpen} onOpenChange={handleCloseChange} modal={true}>
       <DialogContent
+      className="overflow-y-scroll"
         style={{
           background: "url(/images/menuRippedPaper.png)",
-          height: "95vh",
+          height: "90vh",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
-          backgroundSize: "100%",
+          backgroundSize: "100% 100%",
           border: "none",
         }}
       >
