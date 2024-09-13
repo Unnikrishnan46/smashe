@@ -83,7 +83,7 @@ useEffect(()=>{
 
   const loginWithTwitter = async () => {
     try {
-      await signInWithRedirect(auth, twitterProvider).then(
+      await signInWithPopup(auth, twitterProvider).then(
         async (response: UserCredential) => {
           await setData(
             response.user.uid,
