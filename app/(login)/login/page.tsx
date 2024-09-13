@@ -8,6 +8,7 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithPopup,
+  signInWithRedirect,
 } from "firebase/auth";
 import { app, database } from "@/firebase/firebase.config";
 import { useToast } from "@/hooks/use-toast";
@@ -82,7 +83,7 @@ useEffect(()=>{
 
   const loginWithTwitter = async () => {
     try {
-      await signInWithPopup(auth, twitterProvider).then(
+      await signInWithRedirect(auth, twitterProvider).then(
         async (response: UserCredential) => {
           await setData(
             response.user.uid,
