@@ -5,8 +5,15 @@ import { LBCommentStore } from "@/store";
 import { Button } from "../ui/button";
 import LBComment from "./LBComment";
 import { ChevronLeft } from "lucide-react";
-// comments-ripped-paper-mobile.png
-function LBCommentsMobileSheet() {
+
+type props = {
+  selectedUserComment:any[];
+  selectedUser:any;
+  currentUser:any;
+  getComments:any;
+}
+
+function LBCommentsMobileSheet({selectedUserComment,selectedUser,currentUser,getComments}:props) {
   const { isLBCommentsMobileSheetOpen, setIsLBCommentsMobileSheetOpen } =
     LBCommentStore();
   const handleModalChange = () => {
@@ -34,16 +41,19 @@ function LBCommentsMobileSheet() {
           <div className="flex flex-col justify-center items-center gap-3">
             <img
               className="w-16 h-16 rounded-full"
-              src="https://i.pinimg.com/236x/a2/c4/59/a2c45914e3de82adb8721d9d6a8e03b2.jpg"
+              src={selectedUser?.photoUrl}
               alt=""
             />
-            <h1 className="text-[#502A29]">@jhon</h1>
+            <h1 className="text-[#502A29]">{selectedUser?.userName}</h1>
           </div>
           <div className="flex flex-col w-full items-center justify-center gap-3">
+          {selectedUserComment?.map((comment,index)=>(
+          <LBComment width="full" marginLeft="0rem" isMobile={true} comment={comment} key={index}/>
+        ))}
+            {/* <LBComment width="full" marginLeft="0rem" isMobile={true} />
             <LBComment width="full" marginLeft="0rem" isMobile={true} />
             <LBComment width="full" marginLeft="0rem" isMobile={true} />
-            <LBComment width="full" marginLeft="0rem" isMobile={true} />
-            <LBComment width="full" marginLeft="0rem" isMobile={true} />
+            <LBComment width="full" marginLeft="0rem" isMobile={true} /> */}
           </div>
           <div
             className={`${imfell400.className} flex flex-col justify-center items-center gap-4 right-7 w-full`}

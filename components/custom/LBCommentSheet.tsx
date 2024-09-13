@@ -99,7 +99,7 @@ function LBCommentSheet({selectedUserComment,selectedUser,currentUser,getComment
       </div>
       <div className="flex flex-col w-full gap-2 mt-16 items-center h-1/2 overflow-y-scroll scroll-smooth scrollbar-hide">
         {selectedUserComment?.map((comment,index)=>(
-          <LBComment width="80%" marginLeft="1.25rem" isMobile={false} comment={comment}/>
+          <LBComment width="80%" marginLeft="1.25rem" isMobile={false} comment={comment} key={index}/>
         ))}
       </div>
       <div

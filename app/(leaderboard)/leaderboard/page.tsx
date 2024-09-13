@@ -21,6 +21,7 @@ import { LBVoteModalStore } from "@/store";
 import { useGlobalAudioPlayer } from "react-use-audio-player";
 import { parse } from 'date-fns';
 import LBNavMenuMobile from "@/components/custom/LBNavMenuMobile";
+import LBCommentsMobileSheet from "@/components/custom/LBCommentsMobileSheet";
 
 function LeaderBoard() {
   const [loading, setLoading] = useState(true);
@@ -465,6 +466,7 @@ useEffect(()=>{
         <LBContent allUsers={allUsers} activeElection={activeElection} getComments={getComments} previousTopTen={previousTopTen} topTenOfAllTime={topTenOfAllTime}/>
       </div>
       <LBCommentSheet selectedUserComment={selectedUserComment} selectedUser={selectedUser} currentUser={currentUser} getComments={getComments}/>
+      <LBCommentsMobileSheet selectedUserComment={selectedUserComment} selectedUser={selectedUser} currentUser={currentUser} getComments={getComments}/>
       <LBVoteModal voteACandidate={voteACandidate} setComment={setComment}/>
       <VoteSuccessModal successUser={successUser} setSuccessUser={setSuccessUser}/>
       <TopTenModal allUsers={previousTopTen}/>

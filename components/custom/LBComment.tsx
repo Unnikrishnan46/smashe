@@ -12,8 +12,9 @@ function LBComment({ width, marginLeft, isMobile ,comment}: props) {
   
   return (
     <div
+    style={{width:width === "full" ? "100%" : width}}
       key={comment?.id}
-      className={`bg-[#F1F0EF] p-4 flex gap-2 ${imfell400.className} w-[${width}] ml-[${marginLeft}] rounded-md`}
+      className={`bg-[#F1F0EF] p-4 flex gap-2 ${imfell400.className} ml-[${marginLeft}] rounded-md`}
     >
       <div>
         <img
