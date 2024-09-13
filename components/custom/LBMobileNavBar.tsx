@@ -5,7 +5,12 @@ import { LucideCheck, LucideLogOut, LucideMenu } from "lucide-react";
 import { imfell400 } from "@/utils/fonts";
 import { LBNavigationStore } from "@/store";
 
-function LBMobileNavBar() {
+type props = {
+  currentUser:any;
+  logOut:any;
+}
+
+function LBMobileNavBar({currentUser,logOut}:props) {
   const {isLBMobileNavModalOpen,setIsLBMobileNavModalOpen} = LBNavigationStore();
   const handleMenuClick = ()=>{
     setIsLBMobileNavModalOpen(true);
@@ -20,8 +25,8 @@ function LBMobileNavBar() {
             <AvatarImage src="https://i.pinimg.com/236x/a2/c4/59/a2c45914e3de82adb8721d9d6a8e03b2.jpg" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          <h1 className="text-[#EAE5DA]">@jhon</h1>
-          <Button size={"icon"} className="bg-transparent">
+          <h1 className="text-[#EAE5DA]">{currentUser?.displayName}</h1>
+          <Button onClick={logOut} size={"icon"} className="bg-transparent">
             <LucideLogOut color="#EAE5DA" />
           </Button>
         </div>
@@ -33,7 +38,7 @@ function LBMobileNavBar() {
       </div>
       <div className="hidden max-sm:flex w-full bg-[#502A29] justify-center items-center p-3">
         <LucideCheck color="#FFD599"/>
-        <p className={`${imfell400.className} text-[#FFD599]`}>Weekly Vote Submitted</p>
+        {/* <p className={`${imfell400.className} text-[#FFD599]`}>Weekly Vote Submitted</p> */}
       </div>
     </div>
   );

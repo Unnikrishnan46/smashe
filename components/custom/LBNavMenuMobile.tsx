@@ -3,9 +3,15 @@ import { Dialog, DialogContent } from '../ui/dialog'
 import { imfell400 } from '@/utils/fonts'
 import { LucideLogOut } from 'lucide-react'
 import { LBNavigationStore } from '@/store'
-import Link from 'next/link'
+import Link from 'next/link';
 
-function LBNavMenuMobile() {
+type props = {
+  twitterData:any;
+  telegramData:any;
+  eagleData:any;
+}
+
+function LBNavMenuMobile({twitterData,telegramData,eagleData}:props) {
     const {isLBMobileNavModalOpen,setIsLBMobileNavModalOpen} = LBNavigationStore();
     const [activeRoute, setActiveRoute] = useState("/leaderboard");
     const handleCloseChange = ()=>{
@@ -16,6 +22,14 @@ function LBNavMenuMobile() {
         { id: 1, routeName: "Leaderboard", route: "/leaderboard" },
         { id: 2, routeName: "Home", route: "/" },
       ];
+
+      const openLinkInNewTab = (url: string): void => {
+        if (url) {
+          window.open(url, '_blank', 'noopener,noreferrer');
+        } else {
+          console.error('URL is required to open a link.');
+        }
+      };
 
   return (
     <Dialog open={isLBMobileNavModalOpen} onOpenChange={handleCloseChange} modal={true}>
@@ -77,13 +91,13 @@ function LBNavMenuMobile() {
           </div>
           <div className="justify-end flex">
             <div className="flex items-center gap-6">
-              <button className="h-12 w-12 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1]">
+              <button onClick={()=>openLinkInNewTab(twitterData)} className="h-12 w-12 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1]">
                 <img src="/images/xLogo.png" alt="xLogo" />
               </button>
-              <button className="h-12 w-12 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1]">
+              <button onClick={()=>openLinkInNewTab(telegramData)} className="h-12 w-12 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1]">
                 <img src="/images/telegramLogo.png" alt="xLogo" />
               </button>
-              <button className="h-12 w-12 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1]">
+              <button onClick={()=>openLinkInNewTab(eagleData)} className="h-12 w-12 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1]">
                 <img src="/images/eagleLogo.png" alt="xLogo" />
               </button>
             </div>

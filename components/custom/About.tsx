@@ -65,7 +65,7 @@ function About() {
   return (
     <div
       ref={aboutMainRef}
-      className={`bg-[url(/images/what.png)] max-sm:bg-[url(/images/aboutBGMobile.png)] h-[150vh] max-sm:h-[160vh] bg-cover bg-no-repeat -mt-7 w-full relative z-40 max-[400px]:h-[137vh] min-[1200px]:h-[180vh] min-[1400px]:-mt-10 max max-sm:-mt-9`}
+      className={`bg-[url(/images/what.png)] max-sm:bg-[url(/images/aboutBGMobile.png)] h-[150vh] max-sm:h-[160vh] bg-cover bg-no-repeat -mt-7 w-full relative z-40 max-[400px]:h-[137vh] min-[1200px]:h-[180vh] min-[1400px]:-mt-10 max max-sm:-mt-9 aboutSection`}
     >
       <div className="w-full h-full justify-center items-center flex flex-col">
         <div className="w-full justify-center items-center flex flex-col max-sm:px-8">

@@ -10,11 +10,11 @@ import gsap from "gsap";
 gsap.registerPlugin(useGSAP);
 
 const navLinks = [
-  { id: 1, routeName: "About Us", route: "/" },
-  { id: 2, routeName: "Tokenomics", route: "/tokenomics" },
-  { id: 3, routeName: "Whitepaper", route: "/whitepaper" },
-  { id: 4, routeName: "Vote", route: "/vote" },
-  { id: 5, routeName: "Join Us", route: "/join" },
+  { id: 1, routeName: "About Us", route: "/" ,className:"aboutSection"},
+  { id: 2, routeName: "Tokenomics", route: "/tokenomics" ,className:"tokenomicsSection"},
+  { id: 3, routeName: "Whitepaper", route: "/whitepaper" ,className:"whitePaperSection"},
+  { id: 4, routeName: "Vote", route: "/vote" ,className:"voteSection"},
+  { id: 5, routeName: "Join Us", route: "/join",className:"joinSection" },
 ];
 
 function HomeNavbar({ playing ,pause,play}: { playing: boolean , pause:any,play:any}) {
@@ -62,6 +62,20 @@ function HomeNavbar({ playing ,pause,play}: { playing: boolean , pause:any,play:
     );
   });
 
+
+  const handleNavClick = (e:any,item:any)=>{
+    e.preventDefault();
+    const element = document.querySelector(`.${item.className}`);
+    if (element) {
+      window.scrollTo({
+        top: element.getBoundingClientRect().top + window.pageYOffset - 60, // Adjust scroll position if needed
+        behavior: "smooth"
+      });
+    }
+  }
+
+
+
   useEffect(() => {
     setActiveRoute(window.location.pathname);
   }, []);
@@ -86,7 +100,7 @@ function HomeNavbar({ playing ,pause,play}: { playing: boolean , pause:any,play:
                 alt="activeNavBg"
               />
             )}
-            <Link href={item?.route} className={`${imfell400.className}`}>
+            <Link onClick={(e)=>{handleNavClick(e,item)}} href={"#"} className={`${imfell400.className}`}>
               {item?.routeName}
             </Link>
           </div>

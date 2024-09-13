@@ -64,7 +64,7 @@ function WhitePapper() {
   return (
     <div 
     ref={whitePapperRef}
-      className={`bg-[url(/images/whitepaper.png)] max-sm:bg-[url(/images/whitepaperBGMobile.png)] max-sm:bg-center h-[120vh] max-sm:z-20 max-sm:-top-6  py-32 relative z-10 bg-cover bg-no-repeat -mt-10 w-full max-[400px]:h-full max-[400px]:-mt-16 max-sm:h-full`}
+      className={`bg-[url(/images/whitepaper.png)] max-sm:bg-[url(/images/whitepaperBGMobile.png)] max-sm:bg-center h-[120vh] max-sm:z-20 max-sm:-top-6  py-32 relative z-10 bg-cover bg-no-repeat -mt-10 w-full max-[400px]:h-full max-[400px]:-mt-16 max-sm:h-full whitePaperSection`}
     >
       <div className="max-sm:flex max-sm:flex-col justify-center items-center hidden px-8 max-sm:mb-8">
         <h1 ref={headingRef} className={`${imfell400.className} text-[#F2E0C8] text-6xl`}>

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LBCommentStore } from "@/store";
 import { imfell400 } from "@/utils/fonts";
@@ -7,13 +7,26 @@ import { Button } from "../ui/button";
 import { ChevronRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import LBVoteModal from "./LBVoteModal";
+import { database } from "@/firebase/firebase.config";
+import { ref, set } from "firebase/database";
+import { v4 as uuidv4 } from "uuid";
+import { useToast } from "@/hooks/use-toast";
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 gsap.registerPlugin(ScrollTrigger);
 
-function LBCommentSheet() {
+type props = {
+  selectedUserComment:any[];
+  selectedUser:any;
+  currentUser:any;
+  getComments:any;
+}
+
+function LBCommentSheet({selectedUserComment,selectedUser,currentUser,getComments}:props) {
   const { isLBCommentsSheetOpen, setIsLBCommentsSheetOpen } = LBCommentStore();
+  const [comment,setComment] = useState("");
   const mainRef = useRef(null);
+  const { toast } = useToast();
 
   const handleCloseSheet = () => {
     const tl = gsap.timeline({ defaults: { ease: "power1" } });
@@ -30,6 +43,39 @@ function LBCommentSheet() {
     });
   };
 
+  const handleSubmit = async()=>{
+    const commentId = uuidv4();
+    try {
+      const commentRef = ref(database, `/comments/${commentId}`);
+
+      if (currentUser.uid === selectedUser?.userId) {
+        toast({
+          title: "Warning",
+          description: "You cannot comment for yourself.",
+          className:`${imfell400.className}`
+        });
+        return;
+      }
+
+      if(comment){
+        await set(commentRef,{
+          id:commentId,
+          commentFrom: currentUser.uid,
+          commentFromName:currentUser.displayName,
+          commentFromPhoto:currentUser.photoURL,
+          commentTo:selectedUser?.userId,
+          comment:comment,
+          commentTime: new Date().toLocaleString(),
+        });
+        getComments(selectedUser);
+      }
+    } catch (error) {
+      console.log(error);
+    }finally{
+      setComment("");
+    }
+  }
+
   return (
     <div
       ref={mainRef}
@@ -45,17 +91,16 @@ function LBCommentSheet() {
         </div>
         <div className="flex flex-col items-center justify-center gap-2">
           <Avatar className="h-16 w-16">
-            <AvatarImage src="https://i.pinimg.com/236x/a2/c4/59/a2c45914e3de82adb8721d9d6a8e03b2.jpg" />
+            <AvatarImage src={selectedUser?.photoUrl} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          <h1 className="text-[#EAE5DA] text-xl">@jhon</h1>
+          <h1 className="text-[#EAE5DA] text-xl">{selectedUser?.userName}</h1>
         </div>
       </div>
-      <div className="flex flex-col w-full gap-2 mt-16 items-center">
-        <LBComment width="80%" marginLeft="1.25rem" isMobile={false}/>
-        <LBComment width="80%" marginLeft="1.25rem" isMobile={false}/>
-        <LBComment width="80%" marginLeft="1.25rem" isMobile={false}/>
-        <LBComment width="80%" marginLeft="1.25rem" isMobile={false}/>
+      <div className="flex flex-col w-full gap-2 mt-16 items-center h-1/2 overflow-y-scroll scroll-smooth scrollbar-hide">
+        {selectedUserComment?.map((comment,index)=>(
+          <LBComment width="80%" marginLeft="1.25rem" isMobile={false} comment={comment}/>
+        ))}
       </div>
       <div
         className={`mt-5 ${imfell400.className} flex flex-col justify-center items-center gap-4 right-7`}
@@ -65,12 +110,14 @@ function LBCommentSheet() {
           className="bg-[url(/images/LBCommentsContainer.png)] bg-center bg-no-repeat h-[20vh] w-[20vw] p-3"
         >
           <textarea
+          onChange={(e)=>{setComment(e.target.value)}}
+          value={comment}
             className="flex w-full h-full outline-none border-none bg-transparent"
             name=""
             id=""
           ></textarea>
         </div>
-        <Button className="bg-[#796741]">Comment</Button>
+        <Button onClick={handleSubmit} className="bg-[#796741]">Comment</Button>
       </div>
       <button
         onClick={handleCloseSheet}
@@ -78,7 +125,6 @@ function LBCommentSheet() {
       >
         <ChevronRight />
       </button>
-      <LBVoteModal />
     </div>
   );
 }

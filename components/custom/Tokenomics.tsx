@@ -71,7 +71,7 @@ function Tokenomics() {
   return (
     <div
     ref={tokenomicsMainRef}
-      className={`bg-[url(/images/tokenomicsBG.png)] max-sm:bg-[url(/images/tokenomicsBGMobile.png)] h-[120vh] max-sm:h-full max-sm:-top-7 relative z-20 max-sm:z-40 bg-cover bg-no-repeat -mt-10 w-full min-[768px]:h-[140vh]`}
+      className={`bg-[url(/images/tokenomicsBG.png)] max-sm:bg-[url(/images/tokenomicsBGMobile.png)] h-[120vh] max-sm:h-full max-sm:-top-7 relative z-20 max-sm:z-40 bg-cover bg-no-repeat -mt-10 w-full min-[768px]:h-[140vh] tokenomicsSection`}
     >
       <div className="flex justify-center items-center w-full h-full flex-col gap-8 max-sm:pb-14">
         <div className="w-full justify-center items-center flex flex-col max-sm:px-8 max-sm:mt-24">

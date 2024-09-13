@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NavigationMenu from "@/components/custom/NavigationMenu";
 import SmoothScrolling from "@/components/custom/SmoothScroll";
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,13 +18,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} overflow-x-hidden`}>
-        {/* <SmoothScrolling> */}
+      <html lang="en">
+        <body className={`${inter.className} overflow-x-hidden`}>
+          {/* <SmoothScrolling> */}
           {children}
-        {/* </SmoothScrolling> */}
-        <NavigationMenu/>
+          {/* </SmoothScrolling> */}
+          <NavigationMenu />
+          <Toaster />
         </body>
-    </html>
+      </html>
   );
 }

@@ -4,14 +4,15 @@ import React, { useRef } from 'react';
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/all";
+import { useRouter } from 'next/navigation';
 
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollTrigger);
 
 function VoteSection() {
   const voteSectionRef = useRef(null);
+  const router = useRouter();
   useGSAP(()=>{
-
     gsap.from(".vote-section-heading",{
       scrollTrigger:{
         trigger:voteSectionRef.current,
@@ -32,7 +33,7 @@ function VoteSection() {
 
   });
   return (
-    <div ref={voteSectionRef} className='h-[90vh] bg-[#F2E0C8] max-sm:h-[80vh] max-sm:-top-16 relative'>
+    <div ref={voteSectionRef} className='h-[90vh] bg-[#F2E0C8] max-sm:h-[80vh] max-sm:-top-16 relative voteSection'>
       <div className='flex flex-col justify-center items-center'>
         <div className={`max-sm:hidden ${ringbearer.className} text-center mt-8 mb-8`}>
             <div>
@@ -51,7 +52,7 @@ function VoteSection() {
 
         <div className="relative flex justify-center w-full max-sm:hidden">
             <img className='absolute vote-section-image' src="/images/voteList.png" alt="voteList" />
-            <button className="flex items-center justify-center p-0 absolute z-50 top-[50vh] hover:scale-110 transition-transform duration-300">
+            <button onClick={()=>{router.push("/leaderboard")}} className="flex items-center justify-center p-0 absolute z-50 top-[50vh] hover:scale-110 transition-transform duration-300">
               <img
                 src="/images/buyNowBtn.png"
                 alt=""
@@ -60,7 +61,7 @@ function VoteSection() {
               <h1
                 className={`absolute font-bold text-lg ${imfell400.className} text-[#2E3A5B] text-xl`}
               >
-                BUY NOW
+                VOTE NOW
               </h1>
             </button>
         </div>

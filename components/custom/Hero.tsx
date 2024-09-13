@@ -10,6 +10,7 @@ import {
 import React, { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { useRouter } from "next/navigation";
 
 gsap.registerPlugin(useGSAP);
 
@@ -17,15 +18,19 @@ type props = {
   playing: any;
   pause: any;
   play: any;
+  twitterData:any;
+  telegramData:any;
+  eagleData:any
 };
 
-function Hero({ playing, pause, play }: props) {
+function Hero({ playing, pause, play ,twitterData,telegramData,eagleData}: props) {
   const { setIsNavMenuOpen } = navigationMenuStore();
   const { homePageAnimationTl } = gsapAnimationStore();
   const headingRef = useRef(null);
   const descripTionRef = useRef(null);
   const addressRef = useRef(null);
   const scrollMoreRef = useRef(null);
+  const router = useRouter();
 
   useGSAP(() => {
     homePageAnimationTl?.from(
@@ -121,6 +126,14 @@ function Hero({ playing, pause, play }: props) {
     setIsNavMenuOpen(true);
   };
 
+  const openLinkInNewTab = (url: string): void => {
+    if (url) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } else {
+      console.error('URL is required to open a link.');
+    }
+  };
+
   return (
     <div
       className={`bg-[url(/images/heroBG.png)] h-[95vh] bg-cover bg-no-repeat max-sm:bg-center`}
@@ -179,7 +192,7 @@ function Hero({ playing, pause, play }: props) {
               BUY NOW
             </h1>
           </button>
-          <button className="relative flex items-center justify-center p-0 hero-btns hover:scale-110 transition-transform duration-300">
+          <button onClick={()=>{router.push("/leaderboard")}} className="relative flex items-center justify-center p-0 hero-btns hover:scale-110 transition-transform duration-300">
             <img
               src="/images/voteNowBtn.png"
               alt=""
@@ -193,7 +206,7 @@ function Hero({ playing, pause, play }: props) {
           </button>
         </div>
         <div className="hidden max-sm:flex max-sm:flex-col gap-4 mt-4">
-          <button className="relative flex items-center justify-center p-0">
+          <button onClick={()=>{router.push("/leaderboard")}} className="relative flex items-center justify-center p-0">
             <img
               src="/images/buyNowBtnLarge.png"
               alt=""
@@ -205,7 +218,7 @@ function Hero({ playing, pause, play }: props) {
               BUY NOW
             </h1>
           </button>
-          <button className="relative flex items-center justify-center p-0">
+          <button onClick={()=>{router.push("/leaderboard")}} className="relative flex items-center justify-center p-0">
             <img
               src="/images/voteNowBtnLarge.png"
               alt=""
@@ -225,13 +238,13 @@ function Hero({ playing, pause, play }: props) {
           }}
           className="flex items-center gap-6 max-sm:hidden"
         >
-          <button className="h-12 w-12 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] hero-connects">
+          <button onClick={()=>openLinkInNewTab(twitterData)} className="h-12 w-12 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] hero-connects">
             <img src="/images/xLogo.png" alt="xLogo" />
           </button>
-          <button className="h-12 w-12 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] hero-connects">
+          <button onClick={()=>openLinkInNewTab(telegramData)} className="h-12 w-12 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] hero-connects">
             <img src="/images/telegramLogo.png" alt="xLogo" />
           </button>
-          <button className="h-12 w-12 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] hero-connects">
+          <button onClick={()=>openLinkInNewTab(eagleData)} className="h-12 w-12 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] hero-connects">
             <img src="/images/eagleLogo.png" alt="xLogo" />
           </button>
         </div>

@@ -4,11 +4,17 @@ import { Dialog, DialogContent } from '../ui/dialog';
 import { imfell400 } from '@/utils/fonts';
 import { ChevronLeft } from 'lucide-react';
 
+type props = {
+  successUser:any;
+  setSuccessUser:any;
+}
 
-function VoteSuccessModal() {
+
+function VoteSuccessModal({successUser,setSuccessUser}:props) {
     const {isLBVoteSuccessModalOpen,setIsLBVoteSuccessModalOpen} = LBVoteModalStore();
     const handleModalChange = ()=>{
         setIsLBVoteSuccessModalOpen(false);
+        setSuccessUser(null);
     }
   return (
     <Dialog open={isLBVoteSuccessModalOpen} onOpenChange={handleModalChange}>
@@ -29,10 +35,10 @@ function VoteSuccessModal() {
           <div className="flex flex-col justify-center items-center gap-3">
             <img
               className="w-16 h-16 rounded-full"
-              src="https://i.pinimg.com/236x/a2/c4/59/a2c45914e3de82adb8721d9d6a8e03b2.jpg"
+              src={successUser?.photoUrl}
               alt=""
             />
-            <h1 className="text-[#502A29]">@jhon</h1>
+            <h1 className="text-[#502A29]">{successUser?.userName}</h1>
           </div>
           <div className="flex flex-col items-center justify-center gap-4 max-sm:w-full">
             <div className='flex p-2 bg-[#502A29] max-sm:w-full max-sm:justify-center'>

@@ -12,7 +12,7 @@ import {
 import { imfell400 } from "@/utils/fonts";
 import { Button } from "../ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { LBCommentStore, LBVoteModalStore } from "@/store";
+import { LBCommentStore, LBVoteModalStore, selectedUserStore } from "@/store";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/all";
@@ -151,12 +151,19 @@ const data = [
   //   },
 ];
 
-function LBTable() {
+type props = {
+  allUsers:any[];
+  activeElection:any;
+  getComments:any;
+}
+
+function LBTable({allUsers,activeElection,getComments}:props) {
   const { isLBCommentsSheetOpen, setIsLBCommentsSheetOpen } = LBCommentStore();
   const { isLBVoteModalOpen, setIsLBVoteModalOpen } = LBVoteModalStore();
   const { isLBCommentsMobileSheetOpen, setIsLBCommentsMobileSheetOpen } =
   LBCommentStore();
   const [isWidthBelow640, setIsWidthBelow640] = useState(false);
+  const {selectedVoteUser,setSelectedVoteUser} = selectedUserStore();
 
   useEffect(() => {
     const handleResize = () => {
@@ -169,10 +176,11 @@ function LBTable() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const openCommentSheet = () => {
+  const openCommentSheet = (selectedUser:any) => {
     const tl = gsap.timeline({ defaults: { ease: "power1" } });
     if (isWidthBelow640) {
       setIsLBCommentsMobileSheetOpen(true);
+      getComments(selectedUser)
     } else {
       if (!isLBCommentsSheetOpen) {
         tl.to(".comment-main-ref", {
@@ -183,6 +191,7 @@ function LBTable() {
               transformOrigin: "right",
               onComplete: () => {
                 setIsLBCommentsSheetOpen(false);
+                getComments(selectedUser);
               },
             });
           },
@@ -191,9 +200,12 @@ function LBTable() {
     }
   };
 
-  const openVoteModal = () => {
+  const openVoteModal = (item:any) => {
+    setSelectedVoteUser(item);
     setIsLBVoteModalOpen(true);
   };
+  
+  const sortedUsers = [...allUsers].sort((a, b) => (b.votes || 0) - (a.votes || 0));
 
   return (
     <div
@@ -206,17 +218,17 @@ function LBTable() {
         >
           <thead className=" w-full">
             <tr className="text-[#EAE5DA] text-sm font-normal">
-              <th>Username</th>
-              <th>Rank</th>
-              <th>Weekly Votes</th>
-              <th>Comments</th>
-              <th>Votes</th>
+              <th className="w-1/5">Username</th>
+              <th className="w-1/5">Rank</th>
+              <th className="w-1/5">Weekly Votes</th>
+              <th className="w-1/5">Comments</th>
+              <th className="w-1/5">Votes</th>
             </tr>
           </thead>
           <tbody>
-            {data?.map((item, index) => (
+            {sortedUsers?.map((item, index) => (
               <tr
-                key={item.id}
+                key={index}
                 className={`text-[#FFD599] ${
                   index === 0
                     ? "bg-[#7B5645]"
@@ -226,14 +238,14 @@ function LBTable() {
                 } `}
               >
                 <td className="font-medium flex items-center gap-4 text-center">
-                  <img className="h-10 w-10 p-1" src={item.avatar} alt="" />
-                  {item.name}
+                  <img className="h-10 w-10 p-1" src={item.photoUrl} alt="profile-pic" />
+                  {item.userName}
                 </td>
-                <td className="text-center">{item.rank}</td>
-                <td className="text-center">{item.weeklyVotes}</td>
+                <td className="text-center">{index + 1}</td>
+                <td className="text-center">{item?.votes}</td>
                 <td className="text-center">
                   <button
-                    onClick={openCommentSheet}
+                    onClick={()=>{openCommentSheet(item)}}
                     className="bg-[#EAE5DA] text-[#333030] hover:bg-[#f8ebcf] p-1 px-4 rounded-md"
                   >
                     Comment
@@ -241,7 +253,7 @@ function LBTable() {
                 </td>
                 <td className="text-center">
                   <button
-                    onClick={openVoteModal}
+                    onClick={()=>{openVoteModal(item)}}
                     className="bg-[#EAE5DA] text-[#333030] hover:bg-[#f8ebcf] p-1 px-4 rounded-md"
                   >
                     Vote

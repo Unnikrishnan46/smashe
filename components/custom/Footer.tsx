@@ -10,7 +10,13 @@ import SplitType from "split-type";
 gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollTrigger);
 
-function Footer() {
+type props = {
+  twitterData:any;
+  telegramData:any;
+  eagleData:any;
+}
+
+function Footer({twitterData,telegramData,eagleData}:props) {
 
   const footerRef = useRef(null);
   const headingRef = useRef(null);
@@ -70,10 +76,18 @@ function Footer() {
 
   });
 
+  const openLinkInNewTab = (url: string): void => {
+    if (url) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } else {
+      console.error('URL is required to open a link.');
+    }
+  };
+
   return (
     <div
     ref={footerRef}
-      className={`bg-[url(/images/footerBG.png)] max-sm:bg-[url(/images/sample.png)] h-[100vh] max-sm:h-[105vh] max-sm:bg-center bg-cover bg-no-repeat -mt-7 w-full relative z-50 max-sm:-mt-24`}
+      className={`bg-[url(/images/footerBG.png)] max-sm:bg-[url(/images/sample.png)] h-[100vh] max-sm:h-[105vh] max-sm:bg-center bg-cover bg-no-repeat -mt-7 w-full relative z-50 max-sm:-mt-24 joinSection`}
     >
       <div className="w-full flex flex-col h-full justify-center items-center gap-8">
         <div style={{clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)"}} className="max-sm:hidden py-3">
@@ -102,13 +116,13 @@ function Footer() {
           </h1>
         </div>
         <div className="flex items-center gap-6">
-          <button className="h-14 w-14 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] footer-connects">
+          <button onClick={()=>openLinkInNewTab(twitterData!)} className="h-14 w-14 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] footer-connects">
             <img src="/images/xLogo.png" alt="xLogo" />
           </button>
-          <button className="h-14 w-14 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] footer-connects">
+          <button onClick={()=>openLinkInNewTab(telegramData!)} className="h-14 w-14 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] footer-connects">
             <img src="/images/telegramLogo.png" alt="xLogo" />
           </button>
-          <button className="h-14 w-14 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] footer-connects">
+          <button onClick={()=>openLinkInNewTab(eagleData!)} className="h-14 w-14 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] footer-connects">
             <img src="/images/eagleLogo.png" alt="xLogo" />
           </button>
         </div>

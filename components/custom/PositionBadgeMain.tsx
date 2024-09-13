@@ -4,10 +4,14 @@ import PositionBadge from "./PositionBadge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PositionWeekly from "./PositionWeekly";
 import PositionAllTime from "./PositionAllTime";
-import { cn } from "@/lib/utils";
 import { imfell400 } from "@/utils/fonts";
 
-function PositionBadgeMain() {
+type props = {
+  previousTopTen:any;
+  topTenOfAllTime:any;
+}
+
+function PositionBadgeMain({previousTopTen,topTenOfAllTime}:props) {
   const [currentTabValue, setCurrentTabValue] = useState("this-week");
   return (
     <Tabs defaultValue="this-week" className="w-auto -mt-12 relative flex flex-col justify-center items-center">
@@ -33,10 +37,10 @@ function PositionBadgeMain() {
         </TabsTrigger>
       </TabsList>
       <TabsContent value="this-week">
-        <PositionWeekly />
+        <PositionWeekly previousTopTen={previousTopTen}/>
       </TabsContent>
       <TabsContent value="all-time">
-        <PositionAllTime />
+        <PositionAllTime topTenOfAllTime={topTenOfAllTime}/>
       </TabsContent>
     </Tabs>
   );

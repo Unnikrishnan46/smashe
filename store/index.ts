@@ -41,8 +41,11 @@ export const LBVoteModalStore = create<any>((set: any) => ({
 
 export const LBTopTenStore = create<any>((set: any) => ({
   isLBTopTenModalOpen: false,
+  isLBTopTenOfAllTimeModalOpen:false,
   setIsLBTopTenModalOpen: (isOpen: boolean) =>
     set({ isLBTopTenModalOpen: isOpen }),
+  setIsLBTopTenOfAllTimeModalOpen: (isOpen: boolean) =>
+    set({ isLBTopTenOfAllTimeModalOpen: isOpen }),
 }));
 
 export const LBYourTopSpotStore = create<any>((set: any) => ({
@@ -55,4 +58,25 @@ export const LBNavigationStore = create<any>((set: any) => ({
   isLBMobileNavModalOpen: false,
   setIsLBMobileNavModalOpen: (isOpen: boolean) =>
     set({ isLBMobileNavModalOpen: isOpen }),
+}));
+
+export const userDataStore = create<any>((set: any) => ({
+  userData: null,
+  setUserData: (data: any) =>
+    set({ userData: data }),
+}));
+
+export const selectedUserStore = create<any>((set: any) => ({
+  selectedVoteUser: null,
+  setSelectedVoteUser: (user: any) => set({ selectedVoteUser: user }),
+}));
+
+interface SearchState {
+  searchInput: string;  // Changed to string to hold the input value
+  setSearchInput: (input: string) => void;  // Changed to accept a string
+}
+
+export const useSearchStore = create<SearchState>((set) => ({
+  searchInput: '',
+  setSearchInput: (input: string) => set({ searchInput: input }),
 }));

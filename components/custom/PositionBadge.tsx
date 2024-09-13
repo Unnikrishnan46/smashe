@@ -16,7 +16,7 @@ type props = {
   gap: string;
   top: string;
   voteFontSize: string;
-  contentLeft: string;
+  // contentLeft: string;
   megaPhoneTop: string;
   megaphoneLeft: string;
   avatarImageTop: string;
@@ -38,14 +38,14 @@ function PositionBadge({
   fontSize,
   top,
   voteFontSize,
-  contentLeft,
+  // contentLeft,
   megaPhoneTop,
   megaphoneLeft,
   megaphoneSize,
   mobileMarginTop
 }: props) {
   return (
-    <div className="relative flex" style={{marginBottom:mobileMarginTop && `${mobileMarginTop}px`}}>
+    <div className="relative flex justify-center" style={{marginBottom:mobileMarginTop && `${mobileMarginTop}px`}}>
       <img className="max-sm:hidden flex" src={backgroundImage} alt="Leaderboard-Place" />
       <img className="max-sm:flex hidden" src={backgroundImageMobile} alt="Leaderboard-Place" />
 
@@ -82,7 +82,7 @@ function PositionBadge({
         style={{
           gap: gap && `${gap}rem`,
           top: top && `${top}`,
-          left: contentLeft && `${contentLeft}px`,
+          // left: contentLeft && `${contentLeft}px`,
         }}
       >
         <h1 className="text-[#EAE5DA]">{name}</h1>

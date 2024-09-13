@@ -1,33 +1,37 @@
 "use client";
-import React, { useState } from "react";
-import NavLinkActiveBG from "./NavLinkActiveBG";
-import { cn } from "@/lib/utils";
+import React, { useEffect, useState } from "react";
 import { imfell400, ringbearer } from "@/utils/fonts";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
 import { LucideLogOut } from "lucide-react";
-import SvgComponent from "./NavLinkActiveBG";
 import Link from "next/link";
 import { LBTopTenStore, LBYourTopSpotStore } from "@/store";
+import { User } from "firebase/auth";
+import { get, ref } from "firebase/database";
+import { database } from "@/firebase/firebase.config";
 
 const navLinks = [
   { id: 1, routeName: "Leaderboard", route: "/leaderboard" },
   { id: 2, routeName: "Home", route: "/" },
 ];
 
-function LBNavbar() {
+type props = {
+  currentUser:User;
+  logOut:any;
+  twitterData:any;
+  telegramData:any;
+  eagleData:any;
+}
+  function LBNavbar({currentUser,logOut,twitterData,telegramData,eagleData}:props) {
   const [activeRoute, setActiveRoute] = useState("/leaderboard");
-  const { isLBTopTenModalOpen, setIsLBTopTenModalOpen } = LBTopTenStore();
-  const { isLBYourTopSpotModalOpen, setIsLBYourTopSpotModalOpen } =
-    LBYourTopSpotStore();
 
-  const openTopTenModal = () => {
-    setIsLBTopTenModalOpen(true);
-  };
-
-  const openTopSpotModal = () => {
-    setIsLBYourTopSpotModalOpen(true);
-  };
+const openLinkInNewTab = (url: string): void => {
+  if (url) {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  } else {
+    console.error('URL is required to open a link.');
+  }
+};
 
   return (
     <div
@@ -71,11 +75,10 @@ function LBNavbar() {
       </div>
       <div className="flex items-center gap-8">
         <div className="flex items-center gap-2 max-sm:hidden">
-          <button className="h-8 w-8 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] hero-connects">
+          <button onClick={()=>openLinkInNewTab(twitterData!)} className="h-8 w-8 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] hero-connects">
             <img className="scale-75" src="/images/xLogo.png" alt="xLogo" />
           </button>
-          <button
-            onClick={openTopTenModal}
+          <button onClick={()=>openLinkInNewTab(telegramData!)}
             className="h-8 w-8 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] hero-connects"
           >
             <img
@@ -84,8 +87,7 @@ function LBNavbar() {
               alt="xLogo"
             />
           </button>
-          <button
-            onClick={openTopSpotModal}
+          <button onClick={()=>openLinkInNewTab(eagleData!)}
             className="h-8 w-8 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] hero-connects"
           >
             <img className="scale-75" src="/images/eagleLogo.png" alt="xLogo" />
@@ -93,11 +95,11 @@ function LBNavbar() {
         </div>
         <div className={`flex items-center gap-3 ${imfell400.className}`}>
           <Avatar>
-            <AvatarImage src="https://i.ytimg.com/vi/8LUan4KWVMk/maxresdefault.jpg" />
+            <AvatarImage src={currentUser?.photoURL!} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          <h1 className="text-[#EAE5DA]">@jhon</h1>
-          <Button size={"icon"} className="bg-transparent">
+          <h1 className="text-[#EAE5DA]">{currentUser?.displayName}</h1>
+          <Button onClick={logOut} size={"icon"} className="bg-transparent">
             <LucideLogOut color="#EAE5DA" />
           </Button>
         </div>
