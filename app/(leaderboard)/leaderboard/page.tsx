@@ -64,17 +64,29 @@ function LeaderBoard() {
   const fetchActiveElection = async () => {
     try {
       const dbRef = ref(database, "/elections/");
-      const activeElectionQuery = query(
-        dbRef,
-        orderByChild("isActive"),
-        equalTo(true)
-      );
-      const snapshot = await get(activeElectionQuery);
-
+      const snapshot = await get(dbRef);
+  
       if (snapshot.exists()) {
-        const data = snapshot.val();
-        const electionId = Object.keys(data)[0]; 
-        setActiveElection({ id: electionId, ...data[electionId] });
+        const elections = snapshot.val();
+        const currentDate = new Date();
+  
+        // Find the election where the current time is between fromDate and toDate
+        let activeElection = null;
+        Object.keys(elections).forEach((key) => {
+          const election = elections[key];
+          const fromDate = new Date(election.fromDate);
+          const toDate = new Date(election.toDate);
+  
+          if (currentDate >= fromDate && currentDate <= toDate) {
+            activeElection = { id: key, ...election };
+          }
+        });
+  
+        if (activeElection) {
+          setActiveElection(activeElection);
+        } else {
+          setActiveElection(null);
+        }
       } else {
         setActiveElection(null);
       }
@@ -82,7 +94,7 @@ function LeaderBoard() {
       console.error("Error retrieving active election: ", error);
       setActiveElection(null);
     }
-  };
+  };  
 
   const voteACandidate = async (votedUserId: string) => {
     if (!currentUser || !activeElection) {
@@ -153,6 +165,21 @@ function LeaderBoard() {
         votedUserId: votedUserId,
         voteTime: new Date().toLocaleString("en-GB"),
       });
+
+      const commentId = uuidv4();
+      const commentRef = ref(database, `/comments/${commentId}`);
+      
+      if(comment){
+        await set(commentRef,{
+          id:commentId,
+          commentFrom: currentUser.uid,
+          commentFromName:currentUser.displayName,
+          commentFromPhoto:currentUser.photoURL,
+          commentTo:votedUserId,
+          comment:comment,
+          commentTime: new Date().toLocaleString(),
+        });
+      }
   
       toast({
         title: "Vote Cast",
@@ -211,70 +238,79 @@ function LeaderBoard() {
   };
   
 
-const getAllUsersWithVotes = () => {
-  try {
-    const usersRef = ref(database, "/users/");
-    onValue(usersRef, async (snapshot) => {
-      const usersData = snapshot.val();
-
-      if (!usersData) {
-        return;
-      }
-
-      const usersArray = Object.values(usersData);
-      const electionsRef = ref(database, "/elections/");
-      const electionsSnapshot = await get(electionsRef);
-      const electionsData = electionsSnapshot.val();
-
-      if (!electionsData) {
-        return;
-      }
-
-      const activeElection = Object.values(electionsData).find(
-        (election: any) => election.isActive
-      ) as any;
-
-      if (!activeElection) {
-        return;
-      }
-
-      const activeElectionId = activeElection.id;
-      const votesRef = ref(database, `/votes/${activeElectionId}`);
-      onValue(votesRef, (votesSnapshot) => {
-        const votesData = votesSnapshot.val();
-
-        const voteCounts: Record<string, number> = {};
-
-        if (votesData) {
-          Object.values(votesData).forEach((vote: any) => {
-            const votedUserId = vote?.votedUserId;
-            if (votedUserId) {
-              if (voteCounts[votedUserId]) {
-                voteCounts[votedUserId]++;
-              } else {
-                voteCounts[votedUserId] = 1;
-              }
-            }
-          });
-        } else {
-          // console.log("No votes found for the active election.");
+  const getAllUsersWithVotes = () => {
+    try {
+      const usersRef = ref(database, "/users/");
+      onValue(usersRef, async (snapshot) => {
+        const usersData = snapshot.val();
+  
+        if (!usersData) {
+          return;
         }
-
-        const updatedUsers = usersArray.map((user: any) => {
-          const userId = user.userId;
-          const votes = voteCounts[userId] || 0;
-          return {
-            ...user,
-            votes,
-          };
+  
+        const usersArray = Object.values(usersData);
+        const electionsRef = ref(database, "/elections/");
+        const electionsSnapshot = await get(electionsRef);
+        const electionsData = electionsSnapshot.val();
+  
+        if (!electionsData) {
+          return;
+        }
+  
+        // Get the current date
+        const currentDate = new Date();
+  
+        // Find the election where the current time is between fromDate and toDate
+        const activeElection = Object.values(electionsData).find(
+          (election: any) => {
+            const fromDate = new Date(election.fromDate);
+            const toDate = new Date(election.toDate);
+            return currentDate >= fromDate && currentDate <= toDate;
+          }
+        ) as any;
+  
+        if (!activeElection) {
+          return;
+        }
+  
+        const activeElectionId = activeElection.id;
+        const votesRef = ref(database, `/votes/${activeElectionId}`);
+        onValue(votesRef, (votesSnapshot) => {
+          const votesData = votesSnapshot.val();
+  
+          const voteCounts: Record<string, number> = {};
+  
+          if (votesData) {
+            Object.values(votesData).forEach((vote: any) => {
+              const votedUserId = vote?.votedUserId;
+              if (votedUserId) {
+                if (voteCounts[votedUserId]) {
+                  voteCounts[votedUserId]++;
+                } else {
+                  voteCounts[votedUserId] = 1;
+                }
+              }
+            });
+          } else {
+            // console.log("No votes found for the active election.");
+          }
+  
+          const updatedUsers = usersArray.map((user: any) => {
+            const userId = user.userId;
+            const votes = voteCounts[userId] || 0;
+            return {
+              ...user,
+              votes,
+            };
+          });
+          setAllUsers(updatedUsers);
         });
-        setAllUsers(updatedUsers);
       });
-    });
-  } catch (error) {
-    console.error("Error retrieving and updating users with votes: ", error);
-  }
-};
+    } catch (error) {
+      console.error("Error retrieving and updating users with votes: ", error);
+    }
+  };
+  
 
 const getTopTenUsersAllElections = async () => {
   try {

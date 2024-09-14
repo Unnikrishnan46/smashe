@@ -108,7 +108,7 @@ useEffect(()=>{
   }
 
   return (
-    <div className="h-screen w-screen bg-[url(/images/xLoginBG.png)] bg-center bg-no-repeat bg-cover flex justify-center items-center max-sm:bg-cover">
+    <div className="h-screen w-screen bg-[url(/images/loginBg.webp)] bg-center bg-no-repeat bg-cover flex justify-center items-center max-sm:bg-cover">
       <div
         className={`${imfell400.className} flex flex-col justify-center items-center gap-6`}
       >
@@ -118,7 +118,7 @@ useEffect(()=>{
             style={{
               textShadow: "1px 7px 0px #372400",
               color: "transparent",
-              WebkitTextFillColor: "#EAE5DA",
+              WebkitTextFillColor: "#fbbf3e",
             }}
           >
             $MASHE

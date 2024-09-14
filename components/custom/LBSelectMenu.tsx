@@ -83,7 +83,7 @@ function LBSelectMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className={`bg-[#5D574F] border-none text-[#EAE5DA] ${imfell400.className} max-lg:py-7 flex items-center gap-3 p-2 pr-0 justify-center rounded-md`}
+        className={`bg-[#5D574F] max-sm:w-full border-none text-[#EAE5DA] ${imfell400.className} max-lg:py-7 flex items-center gap-3 p-2 pr-0 justify-center rounded-md`}
       >
         Share Meme!
         <ChevronDown />

@@ -40,7 +40,6 @@ function TopTenModal({ allUsers }: props) {
     .sort((a, b) => (b.votes || 0) - (a.votes || 0))
     .slice(0, 10);
 
-    console.log("sortedUsers   :  ",sortedUsers)
 
   return (
     <Dialog open={isLBTopTenModalOpen} onOpenChange={handleModalChange}>
