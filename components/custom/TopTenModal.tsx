@@ -40,6 +40,8 @@ function TopTenModal({ allUsers }: props) {
     .sort((a, b) => (b.votes || 0) - (a.votes || 0))
     .slice(0, 10);
 
+    console.log("sortedUsers   :  ",sortedUsers)
+
   return (
     <Dialog open={isLBTopTenModalOpen} onOpenChange={handleModalChange}>
       <DialogContent
@@ -85,10 +87,10 @@ function TopTenModal({ allUsers }: props) {
                     <td className="font-medium flex items-center gap-4 text-center">
                       <img
                         className="h-10 w-10 p-1"
-                        src={item.photoUrl}
+                        src={item?.photoUrl}
                         alt=""
                       />
-                      {item.userName}
+                      {item?.name}
                     </td>
                     <td className="text-center">{item.votes}</td>
                   </tr>
