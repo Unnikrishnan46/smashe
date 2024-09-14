@@ -9,9 +9,10 @@ import { imfell400 } from "@/utils/fonts";
 type props = {
   previousTopTen:any;
   topTenOfAllTime:any;
+  getComments:any;
 }
 
-function PositionBadgeMain({previousTopTen,topTenOfAllTime}:props) {
+function PositionBadgeMain({previousTopTen,topTenOfAllTime,getComments}:props) {
   const [currentTabValue, setCurrentTabValue] = useState("this-week");
   return (
     <Tabs defaultValue="this-week" className="w-auto -mt-12 relative flex flex-col justify-center items-center">
@@ -37,7 +38,7 @@ function PositionBadgeMain({previousTopTen,topTenOfAllTime}:props) {
         </TabsTrigger>
       </TabsList>
       <TabsContent value="this-week">
-        <PositionWeekly previousTopTen={previousTopTen}/>
+        <PositionWeekly previousTopTen={previousTopTen} getComments={getComments}/>
       </TabsContent>
       <TabsContent value="all-time">
         <PositionAllTime topTenOfAllTime={topTenOfAllTime}/>

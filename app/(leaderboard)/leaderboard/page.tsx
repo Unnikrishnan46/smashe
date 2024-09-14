@@ -378,7 +378,74 @@ const parseCustomDate = (dateString:any) => {
   return new Date(year, month - 1, day, hours24, minutes);
 };
 
-const getTopTenUsersPreviousElection = async () => {
+// const getTopTenUsersPreviousElection = async () => {
+//   try {
+//     const usersRef = ref(database, "/users/");
+//     const usersSnapshot = await get(usersRef);
+//     const usersData = usersSnapshot.val();
+
+//     if (!usersData) {
+//       return;
+//     }
+
+//     const voteCounts: Record<string, { userId: string; votes: number; name: string; photoUrl: string }> = {};
+//     Object.keys(usersData).forEach((userId) => {
+//       const user = usersData[userId];
+//       voteCounts[userId] = {
+//         userId,
+//         votes: 0,
+//         name: user.userName || "Unknown",
+//         photoUrl: user.photoUrl || "",
+//       };
+//     });
+
+//     const electionsRef = ref(database, "/elections/");
+//     const electionsSnapshot = await get(electionsRef);
+//     const electionsData = electionsSnapshot.val();
+
+//     if (!electionsData) {
+//       return;
+//     }
+
+//     const sortedElections = Object.values(electionsData).sort(
+//       (a: any, b: any) => parseCustomDate(b.createdDate).getTime() - parseCustomDate(a.createdDate).getTime()
+//     );
+
+//     if (sortedElections.length < 2) {
+//       return;
+//     }
+
+//     const previousElection = sortedElections[1] as any;
+//     const previousElectionId = previousElection.id;
+
+//     const votesRef = ref(database, `/votes/${previousElectionId}`);
+//     const votesSnapshot = await get(votesRef);
+//     const votesData = votesSnapshot.val();
+
+//     if (!votesData) {
+//       return;
+//     }
+
+//     Object.values(votesData).forEach((vote: any) => {
+//       const votedUserId = vote?.votedUserId;
+//       if (votedUserId && voteCounts[votedUserId]) {
+//         voteCounts[votedUserId].votes++;
+//       }
+//     });
+
+//     const usersWithVotes = Object.values(voteCounts);
+//     const topTenUsers = usersWithVotes
+//       .sort((a, b) => b.votes - a.votes)
+//       .slice(0, 10);
+
+//     setPreviousTopTen(topTenUsers);
+//   } catch (error) {
+//     console.error("Error retrieving and calculating top 10 users for the previous election:", error);
+//   }
+// };
+
+
+const getTopTenUsersActiveElection = async () => {
   try {
     const usersRef = ref(database, "/users/");
     const usersSnapshot = await get(usersRef);
@@ -407,18 +474,25 @@ const getTopTenUsersPreviousElection = async () => {
       return;
     }
 
-    const sortedElections = Object.values(electionsData).sort(
-      (a: any, b: any) => parseCustomDate(b.createdDate).getTime() - parseCustomDate(a.createdDate).getTime()
-    );
+    // Get the current date
+    const currentDate = new Date();
 
-    if (sortedElections.length < 2) {
+    // Find the active election where current time is between fromDate and toDate
+    const activeElection = Object.values(electionsData).find(
+      (election: any) => {
+        const fromDate = new Date(election.fromDate);
+        const toDate = new Date(election.toDate);
+        return currentDate >= fromDate && currentDate <= toDate;
+      }
+    ) as any;
+
+    if (!activeElection) {
+      console.error("No active election found");
       return;
     }
 
-    const previousElection = sortedElections[1] as any;
-    const previousElectionId = previousElection.id;
-
-    const votesRef = ref(database, `/votes/${previousElectionId}`);
+    const activeElectionId = activeElection.id;
+    const votesRef = ref(database, `/votes/${activeElectionId}`);
     const votesSnapshot = await get(votesRef);
     const votesData = votesSnapshot.val();
 
@@ -438,11 +512,13 @@ const getTopTenUsersPreviousElection = async () => {
       .sort((a, b) => b.votes - a.votes)
       .slice(0, 10);
 
-    setPreviousTopTen(topTenUsers);
+    setPreviousTopTen(topTenUsers);  // This could be renamed to `setActiveTopTen` if it's specifically for the active election
   } catch (error) {
-    console.error("Error retrieving and calculating top 10 users for the previous election:", error);
+    console.error("Error retrieving and calculating top 10 users for the active election:", error);
   }
 };
+
+
 
 const fetchSocialMediaData = async () => {
   try {
@@ -474,7 +550,8 @@ useEffect(()=>{
         getAllUsersWithVotes()
         fetchActiveElection();
         getTopTenUsersAllElections();
-        getTopTenUsersPreviousElection();
+        // getTopTenUsersPreviousElection();
+        getTopTenUsersActiveElection()
         setLoading(false);
       } else {
         router.push("/login");

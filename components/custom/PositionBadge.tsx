@@ -22,6 +22,8 @@ type props = {
   avatarImageTop: string;
   megaphoneSize: string;
   mobileMarginTop:string;
+  userData:any;
+  onSpeakerClick:any;
 };
 
 function PositionBadge({
@@ -42,7 +44,9 @@ function PositionBadge({
   megaPhoneTop,
   megaphoneLeft,
   megaphoneSize,
-  mobileMarginTop
+  mobileMarginTop,
+  userData,
+  onSpeakerClick
 }: props) {
   return (
     <div className="relative flex justify-center" style={{marginBottom:mobileMarginTop && `${mobileMarginTop}px`}}>
@@ -74,7 +78,7 @@ function PositionBadge({
           width: megaphoneSize && `${megaphoneSize}px`,
         }}
       >
-        <LucideMegaphone size={15}/>
+        <LucideMegaphone onClick={()=>{onSpeakerClick(userData)}} size={15}/>
         {/* <img style={{height: megaphoneSize && `${megaphoneSize}px`,width: megaphoneSize && `${megaphoneSize}px`,}} src="/images/Megaphone.png" alt="Megaphone" /> */}
       </div>
       <div

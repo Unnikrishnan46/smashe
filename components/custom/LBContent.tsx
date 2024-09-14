@@ -87,7 +87,7 @@ function LBContent({allUsers,activeElection,getComments,previousTopTen,topTenOfA
         </div>
       </div>
       <div className="w-full flex justify-center max-lg:mt-16 max-[450px]:mt-16">
-        <PositionBadgeMain previousTopTen={previousTopTen} topTenOfAllTime={topTenOfAllTime}/>
+        <PositionBadgeMain previousTopTen={previousTopTen} topTenOfAllTime={topTenOfAllTime} getComments={getComments}/>
       </div>
       <div className="w-full flex justify-center relative items-center mt-8">
         <LBSearch />

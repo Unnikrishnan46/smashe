@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from "react";
 import PositionBadge from "./PositionBadge";
+import { LBCommentStore } from "@/store";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/all";
+
+gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(ScrollTrigger);
 
 type props = {
   previousTopTen:any;
+  getComments:any;
 }
 
-function PositionWeekly({previousTopTen}:props) {
+function PositionWeekly({previousTopTen,getComments}:props) {
   const [isWidthBelow640, setIsWidthBelow640] = useState(false);
-  
+  const { isLBCommentsMobileSheetOpen, setIsLBCommentsMobileSheetOpen } =
+  LBCommentStore();
+  const { isLBCommentsSheetOpen, setIsLBCommentsSheetOpen } = LBCommentStore();
+
   useEffect(() => {
     const handleResize = () => {
       setIsWidthBelow640(window.innerWidth < 640);
@@ -18,6 +29,33 @@ function PositionWeekly({previousTopTen}:props) {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const openCommentSheet = (selectedUser:any) => {
+    console.log("function called");
+    
+    const tl = gsap.timeline({ defaults: { ease: "power1" } });
+    if (isWidthBelow640) {
+      setIsLBCommentsMobileSheetOpen(true);
+      getComments(selectedUser)
+    } else {
+      if (!isLBCommentsSheetOpen) {
+        tl.to(".comment-main-ref", {
+          display: "flex",
+          onComplete: () => {
+            tl.to(".comment-main-ref", {
+              right: 0,
+              transformOrigin: "right",
+              onComplete: () => {
+                setIsLBCommentsSheetOpen(false);
+                getComments(selectedUser);
+              },
+            });
+          },
+        });
+      }
+    }
+  };
+
   return (
     <div className="flex items-center">
       <PositionBadge
@@ -39,6 +77,8 @@ function PositionWeekly({previousTopTen}:props) {
         megaphoneSize="30"
         backgroundImageMobile="/images/Leaderboard-mobile-Place1.png"
         mobileMarginTop="0"
+        userData={previousTopTen[1]}
+        onSpeakerClick={openCommentSheet}
       />
       <PositionBadge
         avatarImage={previousTopTen[0]?.photoUrl}
@@ -59,6 +99,8 @@ function PositionWeekly({previousTopTen}:props) {
         megaphoneSize="30"
         backgroundImageMobile="/images/Leaderboard-mobile-Place2.png"
         mobileMarginTop={isWidthBelow640 ? "60" :"0" }
+        userData={previousTopTen[0]}
+        onSpeakerClick={openCommentSheet}
       />
       <PositionBadge
         avatarImage={previousTopTen[2]?.photoUrl}
@@ -79,6 +121,8 @@ function PositionWeekly({previousTopTen}:props) {
         megaphoneSize="30"
         backgroundImageMobile="/images/Leaderboard-mobile-Place1.png"
         mobileMarginTop="0"
+        userData={previousTopTen[2]}
+        onSpeakerClick={openCommentSheet}
       />
     </div>
   );
