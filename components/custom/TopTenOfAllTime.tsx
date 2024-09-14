@@ -78,7 +78,7 @@ function TopTenOfAllTimeModal({topTenOFAllTime}:props) {
                     <td className="text-center">{index + 1}</td>
                     <td className="font-medium flex items-center gap-4 text-center">
                       <img className="h-10 w-10 p-1" src={item.photoUrl} alt="" />
-                      {item.userName}
+                      {item.name}
                     </td>
                     <td className="text-center">{item.votes}</td>
                   </tr>
