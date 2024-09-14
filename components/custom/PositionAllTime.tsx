@@ -1,11 +1,49 @@
 import React, { useEffect, useState } from "react";
 import PositionBadge from "./PositionBadge";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/all";
+import { LBCommentStore } from "@/store";
+
+gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(ScrollTrigger);
+
+
 type props = {
   topTenOfAllTime:any;
+  getComments:any;
 }
 
-function PositionAllTime({topTenOfAllTime}:props) {
+function PositionAllTime({topTenOfAllTime,getComments}:props) {
   const [isWidthBelow640, setIsWidthBelow640] = useState(false);
+  const { isLBCommentsMobileSheetOpen, setIsLBCommentsMobileSheetOpen } =
+  LBCommentStore();
+  const { isLBCommentsSheetOpen, setIsLBCommentsSheetOpen } = LBCommentStore();
+
+
+  const openCommentSheet = (selectedUser:any) => {
+    const tl = gsap.timeline({ defaults: { ease: "power1" } });
+    if (isWidthBelow640) {
+      setIsLBCommentsMobileSheetOpen(true);
+      getComments(selectedUser)
+    } else {
+      if (!isLBCommentsSheetOpen) {
+        tl.to(".comment-main-ref", {
+          display: "flex",
+          onComplete: () => {
+            tl.to(".comment-main-ref", {
+              right: 0,
+              transformOrigin: "right",
+              onComplete: () => {
+                setIsLBCommentsSheetOpen(false);
+                getComments(selectedUser);
+              },
+            });
+          },
+        });
+      }
+    }
+  };
   
   useEffect(() => {
     const handleResize = () => {
@@ -38,6 +76,8 @@ function PositionAllTime({topTenOfAllTime}:props) {
         megaphoneSize="30"
         backgroundImageMobile="/images/Leaderboard-mobile-Place1.png"
         mobileMarginTop="0"
+        userData={topTenOfAllTime[1]}
+        onSpeakerClick={openCommentSheet}
       />
       <PositionBadge
         avatarImage={topTenOfAllTime[0]?.photoUrl}
@@ -58,6 +98,8 @@ function PositionAllTime({topTenOfAllTime}:props) {
         megaphoneSize="30"
         backgroundImageMobile="/images/Leaderboard-mobile-Place2.png"
         mobileMarginTop={isWidthBelow640 ? "60" :"0" }
+        userData={topTenOfAllTime[0]}
+        onSpeakerClick={openCommentSheet}
       />
       <PositionBadge
         avatarImage={topTenOfAllTime[2]?.photoUrl}
@@ -78,6 +120,8 @@ function PositionAllTime({topTenOfAllTime}:props) {
         megaphoneSize="30"
         backgroundImageMobile="/images/Leaderboard-mobile-Place1.png"
         mobileMarginTop="0"
+        userData={topTenOfAllTime[2]}
+        onSpeakerClick={openCommentSheet}
       />
     </div>
   )

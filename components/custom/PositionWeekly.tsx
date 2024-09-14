@@ -31,8 +31,6 @@ function PositionWeekly({previousTopTen,getComments}:props) {
   }, []);
 
   const openCommentSheet = (selectedUser:any) => {
-    console.log("function called");
-    
     const tl = gsap.timeline({ defaults: { ease: "power1" } });
     if (isWidthBelow640) {
       setIsLBCommentsMobileSheetOpen(true);

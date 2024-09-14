@@ -41,7 +41,7 @@ function PositionBadgeMain({previousTopTen,topTenOfAllTime,getComments}:props) {
         <PositionWeekly previousTopTen={previousTopTen} getComments={getComments}/>
       </TabsContent>
       <TabsContent value="all-time">
-        <PositionAllTime topTenOfAllTime={topTenOfAllTime}/>
+        <PositionAllTime topTenOfAllTime={topTenOfAllTime} getComments={getComments}/>
       </TabsContent>
     </Tabs>
   );
