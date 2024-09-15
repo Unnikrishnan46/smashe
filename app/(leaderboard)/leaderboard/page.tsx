@@ -19,7 +19,6 @@ import TopTenOfAllTimeModal from "@/components/custom/TopTenOfAllTime";
 import LBYourTopSpotModal from "@/components/custom/LBYourTopSpotModal";
 import { LBVoteModalStore } from "@/store";
 import { useGlobalAudioPlayer } from "react-use-audio-player";
-import { parse } from 'date-fns';
 import LBNavMenuMobile from "@/components/custom/LBNavMenuMobile";
 import LBCommentsMobileSheet from "@/components/custom/LBCommentsMobileSheet";
 
@@ -186,7 +185,7 @@ function LeaderBoard() {
         description: "Your vote has been successfully cast.",
         className: `${imfell400.className}`,
       });
-  
+      setIsLBVoteModalOpen(false);
     } catch (error) {
       console.error("Error casting vote: ", error);
       toast({

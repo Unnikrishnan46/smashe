@@ -7,6 +7,7 @@ import LBSearch from "./LBSearch";
 import LBTable from "./LBTable";
 import LBSelectMenu from "./LBSelectMenu";
 import { useSearchStore } from "@/store";
+import axios from "axios";
 
 type props = {
   allUsers:any;
@@ -18,6 +19,7 @@ type props = {
 
 function LBContent({allUsers,activeElection,getComments,previousTopTen,topTenOfAllTime}:props) {
   const [timeLeft, setTimeLeft] = useState<string>("00:00:00");
+  const [twitterUsers, setTwitterUsers] = useState<any[]>([]);
   const {searchInput} = useSearchStore();
   const formatTimeLeft = (timeLeft:any) => {
     const hours = String(Math.floor(timeLeft / 3600)).padStart(2, '0');
@@ -25,6 +27,9 @@ function LBContent({allUsers,activeElection,getComments,previousTopTen,topTenOfA
     const seconds = String(timeLeft % 60).padStart(2, '0');
     return `${hours}:${minutes}:${seconds}`;
   };
+
+  // console.log("twitterUsers : ",twitterUsers);
+  
 
   useEffect(() => {
     if (activeElection?.toDate) {
@@ -43,6 +48,37 @@ function LBContent({allUsers,activeElection,getComments,previousTopTen,topTenOfA
       return () => clearInterval(interval);
     }
   }, [activeElection]);
+
+  const fetchTwitterUsers = async () => {
+    try {
+      const response = await fetch(`/api/twitterUser`, {
+        method: 'POST', // Specify the HTTP method
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username:searchInput }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to fetch Twitter users: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      console.log(data);
+      
+      setTwitterUsers([data.data]); // Add Twitter user data to the state
+    } catch (error) {
+      console.error("Error fetching Twitter users:", error);
+    }
+  };
+  
+  
+
+  // useEffect(() => {
+  //   if (searchInput) {
+  //     fetchTwitterUsers(); // Fetch Twitter users whenever search input changes
+  //   }
+  // }, [searchInput]);
 
   const filteredUsers = allUsers?.filter((user: any) =>
     user?.userName?.toLowerCase()?.includes(searchInput?.toLowerCase())
@@ -93,7 +129,7 @@ function LBContent({allUsers,activeElection,getComments,previousTopTen,topTenOfA
         <LBSearch />
       </div>
       <div className="h-[30vh]">
-        <LBTable allUsers={filteredUsers} activeElection={activeElection} getComments={getComments}/>
+        <LBTable allUsers={filteredUsers} activeElection={activeElection} getComments={getComments} fetchTwitterUsers={fetchTwitterUsers} twitterUsers={twitterUsers}/>
       </div>
     </div>
   );
