@@ -18,6 +18,7 @@ export async function POST(request: Request) {
       }
     );
     
+    console.log(twitterResponse);
 
     if (twitterResponse.status === 429) {
       const rateLimitReset = twitterResponse.headers.get('x-rate-limit-reset');
