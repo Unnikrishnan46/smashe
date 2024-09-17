@@ -567,7 +567,7 @@ useEffect(()=>{
   
 
   return (
-    <div className="h-[140vh] max-lg:h-[160vh] max-sm:h-[180vh] bg-black overflow-hidden">
+    <div className="h-[160vh] max-lg:h-[180vh] max-sm:h-[180vh] bg-black overflow-hidden">
       <div
         style={{ backgroundSize: "100% 100%" }}
         className=" bg-[url(/images/leaderboardBg.png)] bg-center bg-no-repeat w-full h-full relative"

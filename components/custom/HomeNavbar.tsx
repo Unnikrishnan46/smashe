@@ -15,6 +15,7 @@ const navLinks = [
   { id: 3, routeName: "Whitepaper", route: "/whitepaper" ,className:"whitePaperSection"},
   { id: 4, routeName: "Vote", route: "/vote" ,className:"voteSection"},
   { id: 5, routeName: "Join Us", route: "/join",className:"joinSection" },
+  { id: 6, routeName: "Coming Soon", route: "#" },
 ];
 
 function HomeNavbar({ playing ,pause,play}: { playing: boolean , pause:any,play:any}) {

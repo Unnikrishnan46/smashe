@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import PositionBadge from "./PositionBadge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PositionWeekly from "./PositionWeekly";
 import PositionAllTime from "./PositionAllTime";
@@ -17,7 +16,7 @@ function PositionBadgeMain({previousTopTen,topTenOfAllTime,getComments}:props) {
   return (
     <Tabs defaultValue="this-week" className="w-auto -mt-12 relative flex flex-col justify-center items-center">
       <TabsList
-        className={`bg-black/20 ${imfell400.className} w-auto`}
+        className={`bg-black/20 ${imfell400.className} w-auto min-[1200px]:mb-28 min-[1200px]:scale-125`}
         defaultValue={currentTabValue}
       >
         <TabsTrigger

@@ -11,6 +11,7 @@ const navLinks = [
   { id: 3, routeName: "Whitepaper", route: "/whitepaper" },
   { id: 4, routeName: "Vote", route: "/vote" },
   { id: 5, routeName: "Join Us", route: "/join" },
+  { id: 6, routeName: "Coming Soon", route: "#" },
 ];
 
 function NavigationMenu() {

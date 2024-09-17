@@ -16,7 +16,6 @@ type props = {
   gap: string;
   top: string;
   voteFontSize: string;
-  // contentLeft: string;
   megaPhoneTop: string;
   megaphoneLeft: string;
   avatarImageTop: string;
@@ -24,6 +23,8 @@ type props = {
   mobileMarginTop:string;
   userData:any;
   onSpeakerClick:any;
+  bgScale:any;
+  profileScale:any;
 };
 
 function PositionBadge({
@@ -40,17 +41,18 @@ function PositionBadge({
   fontSize,
   top,
   voteFontSize,
-  // contentLeft,
   megaPhoneTop,
   megaphoneLeft,
   megaphoneSize,
   mobileMarginTop,
   userData,
-  onSpeakerClick
+  onSpeakerClick,
+  bgScale,
+  profileScale
 }: props) {
   return (
     <div className="relative flex justify-center" style={{marginBottom:mobileMarginTop && `${mobileMarginTop}px`}}>
-      <img className="max-sm:hidden flex" src={backgroundImage} alt="Leaderboard-Place" />
+      <img style={{scale:bgScale}} className="max-sm:hidden flex" src={backgroundImage} alt="Leaderboard-Place" />
       <img className="max-sm:flex hidden" src={backgroundImageMobile} alt="Leaderboard-Place" />
 
       <div>
@@ -63,6 +65,7 @@ function PositionBadge({
             height: avatarSize === "0" ? 0 : `${avatarSize}px`,
             left: left && `${left}px`,
             top: avatarImageTop && `${avatarImageTop}px`,
+            scale:profileScale
           }}
           src={avatarImage}
           alt=""
@@ -89,7 +92,7 @@ function PositionBadge({
           // left: contentLeft && `${contentLeft}px`,
         }}
       >
-        <h1 className="text-[#EAE5DA]">{name}</h1>
+        <h1 className="text-[#EAE5DA] min-[1200px]:text-xl">{name}</h1>
         <div className="flex flex-col items-center justify-center">
           <h1
             style={{

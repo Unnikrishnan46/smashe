@@ -27,8 +27,6 @@ function LBContent({allUsers,activeElection,getComments,previousTopTen,topTenOfA
     const seconds = String(timeLeft % 60).padStart(2, '0');
     return `${hours}:${minutes}:${seconds}`;
   };
-
-  // console.log("twitterUsers : ",twitterUsers);
   
 
   useEffect(() => {
@@ -52,7 +50,7 @@ function LBContent({allUsers,activeElection,getComments,previousTopTen,topTenOfA
   const fetchTwitterUsers = async () => {
     try {
       const response = await fetch(`/api/twitterUser`, {
-        method: 'POST', // Specify the HTTP method
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -66,19 +64,11 @@ function LBContent({allUsers,activeElection,getComments,previousTopTen,topTenOfA
       const data = await response.json();
       console.log(data);
       
-      setTwitterUsers([data.data]); // Add Twitter user data to the state
+      setTwitterUsers([data.data]);
     } catch (error) {
       console.error("Error fetching Twitter users:", error);
     }
   };
-  
-  
-
-  // useEffect(() => {
-  //   if (searchInput) {
-  //     fetchTwitterUsers(); // Fetch Twitter users whenever search input changes
-  //   }
-  // }, [searchInput]);
 
   const filteredUsers = allUsers?.filter((user: any) =>
     user?.userName?.toLowerCase()?.includes(searchInput?.toLowerCase())
@@ -125,7 +115,7 @@ function LBContent({allUsers,activeElection,getComments,previousTopTen,topTenOfA
       <div className="w-full flex justify-center max-lg:mt-16 max-[450px]:mt-16">
         <PositionBadgeMain previousTopTen={previousTopTen} topTenOfAllTime={topTenOfAllTime} getComments={getComments}/>
       </div>
-      <div className="w-full flex justify-center relative items-center mt-8">
+      <div className="w-full flex justify-center relative items-center mt-8 min-[1200px]:mt-24">
         <LBSearch />
       </div>
       <div className="h-[30vh]">

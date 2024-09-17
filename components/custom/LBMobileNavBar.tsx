@@ -36,10 +36,10 @@ function LBMobileNavBar({currentUser,logOut}:props) {
           </button>
         </div>
       </div>
-      <div className="hidden max-sm:flex w-full bg-[#502A29] justify-center items-center p-3">
+      {/* <div className="hidden max-sm:flex w-full bg-[#502A29] justify-center items-center p-3">
         <LucideCheck color="#FFD599"/>
-        {/* <p className={`${imfell400.className} text-[#FFD599]`}>Weekly Vote Submitted</p> */}
-      </div>
+        <p className={`${imfell400.className} text-[#FFD599]`}>Weekly Vote Submitted</p>
+      </div> */}
     </div>
   );
 }

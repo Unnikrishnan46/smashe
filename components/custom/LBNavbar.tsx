@@ -47,7 +47,7 @@ const openLinkInNewTab = (url: string): void => {
             {activeRoute === item?.route && (
               <img
                 // style={{ filter: "drop-shadow(0 0 10px #F7F1E9)" }}
-                className="absolute -z-[0] top-0  nav-link-bg"
+                className="absolute -z-[0] top-0  nav-link-bg h-30 w-40"
                 src="/images/LBNavBG.png"
                 alt="activeNavBg"
               />
