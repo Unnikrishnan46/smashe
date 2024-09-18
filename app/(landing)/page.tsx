@@ -76,7 +76,7 @@ export default function Home() {
   },[]);
 
   return (
-    <div className="h-full opacity-0" ref={homePageRef}>
+    <div className="h-full opacity-0 bg-black" ref={homePageRef}>
       <ParticlesOverlay />
       <HomeNavbar playing={playing} pause={pause} play={play} />
       <Hero playing={playing} pause={pause} play={play} twitterData={twitterData} telegramData={telegramData} eagleData={eagleData}/>

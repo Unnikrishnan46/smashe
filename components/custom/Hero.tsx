@@ -136,7 +136,7 @@ function Hero({ playing, pause, play ,twitterData,telegramData,eagleData}: props
 
   return (
     <div
-      className={`bg-[url(/images/loginBg.webp)] h-[95vh] bg-cover bg-no-repeat max-sm:bg-center`}
+      className={`bg-[url(/images/hero-bg.png)] h-[95vh] bg-cover bg-no-repeat max-sm:bg-center`}
     >
       <div className="h-full justify-end flex pl-20 flex-col gap-6 max-sm:justify-center max-sm:px-4 max-sm:items-center">
         <div className="hidden absolute max-md:top-14 max-sm:top-16 top-24 max-[400px]:top-16 max-sm:flex items-center h-[45px] mb-20 bg-contain bg-no-repeat bg-[url(/images/addressFrame.png)] max-[400px]:h-[37px]">
