@@ -84,27 +84,27 @@ function Tokenomics() {
         </div>
         <div className="flex items-center gap-8 mt-8 max-sm:hidden max-md:gap-2">
           <img
-            className="mb-12 sm:w-48 md:w-auto max-[1270px]:h-[45%] tokenomics-f-img"
+            className="mt-12 sm:w-48 md:w-auto max-[1270px]:h-[45%] tokenomics-f-img"
             src="/images/tokenContainer1.png"
             alt="tokenContainer"
           />
           <img
-            className="-mb-12 sm:w-48 md:w-auto max-[1270px]:h-[45%] tokenomics-f-img"
+            className="-mt-20 sm:w-48 md:w-auto max-[1270px]:h-[45%] tokenomics-f-img"
             src="/images/tokenContainer2.png"
             alt="tokenContainer"
           />
           <img
-            className="mb-12 sm:w-48 md:w-auto max-[1270px]:h-[45%] tokenomics-f-img"
+            className=" sm:w-48 md:w-auto max-[1270px]:h-[45%] tokenomics-f-img"
             src="/images/tokenContainer3.png"
             alt="tokenContainer"
           />
           <img
-            className="-mb-12 sm:w-48 md:w-auto max-[1270px]:h-[45%] tokenomics-f-img"
+            className="-mt-20 sm:w-48 md:w-auto max-[1270px]:h-[45%] tokenomics-f-img"
             src="/images/tokenContainer4.png"
             alt="tokenContainer"
           />
           <img
-            className="mb-12 sm:w-48 md:w-auto max-[1270px]:h-[45%] tokenomics-f-img"
+            className="mt-12 sm:w-48 md:w-auto max-[1270px]:h-[45%] tokenomics-f-img"
             src="/images/tokenContainer5.png"
             alt="tokenContainer"
           />

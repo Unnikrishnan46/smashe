@@ -9,7 +9,7 @@ export const navigationMenuStore = create<any>((set: any) => ({
 }));
 
 export const loadingPageStore = create<any>((set: any) => ({
-  isLoadingPageDone: false,
+  isLoadingPageDone: true,
   setIsLoadingPageDone: (isDone: boolean) => set({ isLoadingPageDone: isDone }),
 }));
 

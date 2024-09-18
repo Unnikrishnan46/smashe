@@ -30,10 +30,10 @@ export default function Home() {
   const [eagleData, setEagleData] = useState<string | null>(null);
 
   useGSAP(() => {
-    homePageAnimationTl.from(
+    homePageAnimationTl.to(
       homePageRef.current,
       {
-        opacity: 0,
+        opacity: 1,
         duration: 1,
         onComplete: () => {
           if (pathname === "/") {
@@ -76,7 +76,7 @@ export default function Home() {
   },[]);
 
   return (
-    <div className="h-full" ref={homePageRef}>
+    <div className="h-full opacity-0" ref={homePageRef}>
       <ParticlesOverlay />
       <HomeNavbar playing={playing} pause={pause} play={play} />
       <Hero playing={playing} pause={pause} play={play} twitterData={twitterData} telegramData={telegramData} eagleData={eagleData}/>

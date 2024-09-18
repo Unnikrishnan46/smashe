@@ -248,10 +248,12 @@ function Hero({ playing, pause, play ,twitterData,telegramData,eagleData}: props
             <img src="/images/eagleLogo.png" alt="xLogo" />
           </button>
           <button className="h-12 w-12 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] hero-connects">
+            <img src="/images/dexscreenerLogo.png" alt="xLogo" />
+          </button>
+          <button className="h-12 w-12 rounded-full justify-center items-center flex bg-[#EAE5DA] border-2 border-[#D2BFA1] hero-connects">
             <img src="/images/solana-logo.png" alt="xLogo" />
           </button>
         </div>
-
         <div
           ref={addressRef}
           className="flex items-center h-[45px] mb-20 bg-contain bg-no-repeat bg-[url(/images/addressFrame.png)] max-sm:hidden"
