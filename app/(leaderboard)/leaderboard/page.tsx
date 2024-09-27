@@ -26,6 +26,7 @@ function LeaderBoard() {
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<User>();
   const [allUsers, setAllUsers] = useState<any>([]);
+  const [allEvilUsers,setAllEvilUsers] = useState<any>([]);
   const [activeElection, setActiveElection] = useState<any>();
   const [comment,setComment] = useState<string>("");
   const [selectedUserComment,setSelectedUserComment] = useState<any>([]);
@@ -36,6 +37,7 @@ function LeaderBoard() {
  const [twitterData, setTwitterData] = useState<string | null>(null);
  const [telegramData, setTelegramData] = useState<string | null>(null);
  const [eagleData, setEagleData] = useState<string | null>(null);
+ const [topTenEvilUsers,setTopTenEvilUsers] = useState<any>([]);
 
   const {
     isLBVoteModalOpen,
@@ -309,6 +311,139 @@ function LeaderBoard() {
       console.error("Error retrieving and updating users with votes: ", error);
     }
   };
+
+  const getAllUsersWithEvilVotes = () => {
+    try {
+      const usersRef = ref(database, "/users/");
+      onValue(usersRef, async (snapshot) => {
+        const usersData = snapshot.val();
+  
+        if (!usersData) {
+          return;
+        }
+  
+        const usersArray = Object.values(usersData);
+        const electionsRef = query(ref(database, "/elections/"), orderByChild("electionMode"), equalTo("evil"));
+        const electionsSnapshot = await get(electionsRef);
+        const electionsData = electionsSnapshot.val();
+  
+        if (!electionsData) {
+          return;
+        }
+  
+        // Get the current date
+        const currentDate = new Date();
+  
+        // Find the election where the current time is between fromDate and toDate
+        const activeElection = Object.values(electionsData).find(
+          (election: any) => {
+            const fromDate = new Date(election.fromDate);
+            const toDate = new Date(election.toDate);
+            return currentDate >= fromDate && currentDate <= toDate;
+          }
+        ) as any;
+  
+        if (!activeElection) {
+          return;
+        }
+  
+        const activeElectionId = activeElection.id;
+        const votesRef = ref(database, `/votes/${activeElectionId}`);
+        onValue(votesRef, (votesSnapshot) => {
+          const votesData = votesSnapshot.val();
+  
+          const voteCounts: Record<string, number> = {};
+  
+          if (votesData) {
+            Object.values(votesData).forEach((vote: any) => {
+              const votedUserId = vote?.votedUserId;
+              if (votedUserId) {
+                if (voteCounts[votedUserId]) {
+                  voteCounts[votedUserId]++;
+                } else {
+                  voteCounts[votedUserId] = 1;
+                }
+              }
+            });
+          } else {
+            // console.log("No votes found for the active election.");
+          }
+  
+          const updatedUsers = usersArray.map((user: any) => {
+            const userId = user.userId;
+            const votes = voteCounts[userId] || 0;
+            return {
+              ...user,
+              votes,
+            };
+          });
+          setAllEvilUsers(updatedUsers);
+        });
+      });
+    } catch (error) {
+      console.error("Error retrieving and updating users with votes: ", error);
+    }
+  };
+
+  const getTopTenUsersInEvilElections = async () => {
+    try {
+      // Reference to users data
+      const usersRef = ref(database, "/users/");
+      const usersSnapshot = await get(usersRef);
+      const usersData = usersSnapshot.val();
+  
+      if (!usersData) {
+        return;
+      }
+  
+      const voteCounts: Record<string, { userId: string; votes: number; name: string; photoUrl: string }> = {};
+      Object.keys(usersData).forEach((userId) => {
+        const user = usersData[userId];
+        voteCounts[userId] = {
+          userId,
+          votes: 0,
+          name: user.userName || "Unknown",
+          photoUrl: user.photoUrl || "",
+        };
+      });
+  
+      // Query for elections with electionMode set to "evil"
+      const electionsRef = query(ref(database, "/elections/"), orderByChild("electionMode"), equalTo("evil"));
+      const electionsSnapshot = await get(electionsRef);
+      const electionsData = electionsSnapshot.val();
+      
+      if (!electionsData) {
+        return;
+      }
+  
+      // Iterate over elections and collect vote data
+      for (const electionId in electionsData) {
+        const votesRef = ref(database, `/votes/${electionId}`);
+        const votesSnapshot = await get(votesRef);
+        const votesData = votesSnapshot.val();
+  
+        if (votesData) {
+          Object.values(votesData).forEach((vote: any) => {
+            const votedUserId = vote?.votedUserId;
+            if (votedUserId && voteCounts[votedUserId]) {
+              voteCounts[votedUserId].votes++;
+            }
+          });
+        }
+      }
+  
+      // Get top 10 users by votes
+      const usersWithVotes = Object.values(voteCounts);
+      const topTenEvilUsers = usersWithVotes
+        .sort((a, b) => b.votes - a.votes)
+        .slice(0, 10);
+      console.log('topTenEvilUsers  : ',topTenEvilUsers);
+      
+      setTopTenEvilUsers(topTenEvilUsers);
+    } catch (error) {
+      console.error("Error retrieving and calculating top 10 users in evil elections:", error);
+    }
+  };
   
 
 const getTopTenUsersAllElections = async () => {
@@ -550,6 +685,7 @@ useEffect(()=>{
         fetchActiveElection();
         getTopTenUsersAllElections();
         // getTopTenUsersPreviousElection();
+        getTopTenUsersInEvilElections();
         getTopTenUsersActiveElection()
         setLoading(false);
       } else {
@@ -567,15 +703,15 @@ useEffect(()=>{
   
 
   return (
-    <div className="h-[160vh] max-lg:h-[180vh] max-sm:h-[180vh] bg-black overflow-hidden">
+    <div className="h-[150vh] max-lg:h-[180vh] max-sm:h-[180vh] bg-black overflow-hidden">
       <div
         style={{ backgroundSize: "100% 100%" }}
-        className=" bg-[url(/images/leaderboardBg.png)] bg-center bg-no-repeat w-full h-full relative"
+        className="bg-[url(/images/leaderboardBg.png)] bg-center bg-no-repeat w-full h-full relative"
       >
         <LBNavbar currentUser={currentUser!} logOut={logOut} twitterData={twitterData} telegramData={telegramData} eagleData={eagleData}/>
         <LBMobileNavBar currentUser={currentUser!} logOut={logOut}/>
         <LBNavMenuMobile twitterData={twitterData} telegramData={telegramData} eagleData={eagleData}/>
-        <LBContent allUsers={allUsers} activeElection={activeElection} getComments={getComments} previousTopTen={previousTopTen} topTenOfAllTime={topTenOfAllTime}/>
+        <LBContent allUsers={allUsers} activeElection={activeElection} getComments={getComments} previousTopTen={previousTopTen} topTenOfAllTime={topTenOfAllTime} topTenEvilUsers={topTenEvilUsers}/>
       </div>
       <LBCommentSheet selectedUserComment={selectedUserComment} selectedUser={selectedUser} currentUser={currentUser} getComments={getComments}/>
       <LBCommentsMobileSheet selectedUserComment={selectedUserComment} selectedUser={selectedUser} currentUser={currentUser} getComments={getComments}/>

@@ -40,7 +40,6 @@ function TopTenModal({ allUsers }: props) {
     .sort((a, b) => (b.votes || 0) - (a.votes || 0))
     .slice(0, 10);
 
-
   return (
     <Dialog open={isLBTopTenModalOpen} onOpenChange={handleModalChange}>
       <DialogContent
@@ -75,25 +74,39 @@ function TopTenModal({ allUsers }: props) {
                 </tr>
               </thead>
               <tbody>
-                {sortedUsers?.map((item, index) => (
-                  <tr
-                    key={index}
-                    className={`text-[#FFD599] ${
-                      index % 2 === 0 ? "bg-[#4A3B34]" : "bg-[#414434]"
-                    } `}
-                  >
-                    <td className="text-center">{index + 1}</td>
-                    <td className="font-medium flex items-center gap-4 text-center">
-                      <img
-                        className="h-10 w-10 p-1"
-                        src={item?.photoUrl}
-                        alt=""
-                      />
-                      {item?.name}
-                    </td>
-                    <td className="text-center">{item.votes}</td>
-                  </tr>
-                ))}
+                {sortedUsers?.map((item, index) => {
+                  // Define the background color based on the index
+                  let bgColor = "";
+                  if (index === 0) {
+                    bgColor = "#D87000"; // First row
+                  } else if (index === 1) {
+                    bgColor = "#7787A6"; // Second row
+                  } else if (index === 2) {
+                    bgColor = "#5B2928"; // Third row
+                  } else {
+                    // For the rest of the rows, alternate between #414434 and #4A3B34
+                    bgColor = index % 2 === 0 ? "#4A3B34" : "#414434";
+                  }
+
+                  return (
+                    <tr
+                      key={index}
+                      className={`text-[#FFD599]`}
+                      style={{ backgroundColor: bgColor }} // Apply the background color
+                    >
+                      <td className="text-center">{index + 1}</td>
+                      <td className="font-medium flex items-center gap-4 text-center">
+                        <img
+                          className="h-10 w-10 p-1"
+                          src={item?.photoUrl}
+                          alt=""
+                        />
+                        {item?.name}
+                      </td>
+                      <td className="text-center">{item.votes}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
             <Button

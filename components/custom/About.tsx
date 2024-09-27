@@ -15,51 +15,48 @@ function About() {
   const headingRef = useRef(null);
   const aboutPara = useRef(null);
   useGSAP(() => {
-
     gsap.from(".about-heading", {
       scrollTrigger: {
-        trigger:aboutMainRef.current,
-        start:"top 65%",
+        trigger: aboutMainRef.current,
+        start: "top 65%",
       },
-      duration:1,
-      opacity:0
+      duration: 1,
+      opacity: 0,
     });
 
     gsap.from(".about-card-img", {
       scrollTrigger: {
-        trigger:aboutMainRef.current,
-        start:"top 20%",
-        markers:false
+        trigger: aboutMainRef.current,
+        start: "top 20%",
+        markers: false,
       },
-      duration:2,
-      opacity:0,
-      x:20
+      duration: 2,
+      opacity: 0,
+      x: 20,
     });
 
-    gsap.from(headingRef.current,{
+    gsap.from(headingRef.current, {
       scrollTrigger: {
-        trigger:headingRef.current,
-        start:"top 80%",
-        markers:false
+        trigger: headingRef.current,
+        start: "top 80%",
+        markers: false,
       },
-      duration:2,
-      opacity:0,
-    })
+      duration: 2,
+      opacity: 0,
+    });
 
     const text = SplitType.create(aboutPara?.current!);
 
-    gsap.from(text.lines,{
+    gsap.from(text.lines, {
       scrollTrigger: {
-        trigger:headingRef.current,
-        start:"top 70%",
-        markers:false
+        trigger: headingRef.current,
+        start: "top 70%",
+        markers: false,
       },
-      duration:2,
-      opacity:0,
-      stagger:0.2
+      duration: 2,
+      opacity: 0,
+      stagger: 0.2,
     });
-
-
   });
 
   return (
@@ -90,11 +87,14 @@ function About() {
             />
           </div>
           <div className="w-1/2 max-sm:w-full max-[850px]:w-full flex flex-col justify-center items-start max-sm:items-center gap-4 max-[850px]:text-center max-[850px]:items-center">
-            <h1 ref={headingRef} className={`text-[#F2E0C8] ${imfell400.className} text-5xl`}>
+            <h1
+              ref={headingRef}
+              className={`text-[#F2E0C8] ${imfell400.className} text-5xl`}
+            >
               What is $mashe?
             </h1>
             <div className="pr-40 max-sm:px-7 max-sm:text-center max-[850px]:w-full max-[850px]:text-center max-[850px]:pr-0">
-              <p
+              {/* <p
               ref={aboutPara}
                 className={`text-[#C3AF93] ${imfell400.className} text-2xl max-sm:text-lg max-[400px]:text-sm`}
               >
@@ -102,7 +102,13 @@ function About() {
                 enim at enim tempor lacinia lobortis cras. Lorem ipsum dolor sit
                 amet consectetur. Sagittis aliquam lacinia enim at enim tempor
                 lacinia lobortis cras. Lorem ipsum dolor sit amet consectetur.{" "}
-              </p>
+              </p> */}
+              <ol className={`text-[#C3AF93] ${imfell400.className} text-xl max-lg:text-lg max-md:text-sm max-md:gap-0 flex flex-col gap-8`}>
+                <li>1. Convert some of your funds into Solana ($SOL) using a centralized exchange like Binance or Coinbase.</li>
+                <li>2. Set up a new wallet using the Phantom App, and make sure to securely store your seed phrase by writing it down somewhere safe!</li>
+                <li>3. Copy your Solana wallet address and transfer some Solana from your exchange account to your Phantom wallet.</li>
+                <li className="max-md:hidden flex">4. Head over to an exchange platform like Raydium (use our buy button if you&apos;re having difficulties) and go to the &apos;Swap&apos; section. Connect your Phantom wallet when asked and &quot;Swap&quot; your Solana for Mashe. You can find Mashe by pasting the contract address below:</li>
+              </ol>
             </div>
 
             <button className="flex items-center justify-center p-0 hover:scale-110 transition-transform duration-300">
