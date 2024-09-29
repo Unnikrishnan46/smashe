@@ -85,11 +85,14 @@ useEffect(()=>{
     try {
       await signInWithPopup(auth, twitterProvider).then(
         async (response: UserCredential) => {
+          const highQualityPhotoURL = response.user.photoURL
+          ? response.user.photoURL.replace('_normal', '') // Remove '_normal' for high-quality image
+          : "";
           await setData(
             response.user.uid,
             response.user.displayName!,
             response.user.email!,
-            response.user.photoURL!,
+            highQualityPhotoURL,
             response.user.phoneNumber!
           );
           router.replace("/leaderboard");

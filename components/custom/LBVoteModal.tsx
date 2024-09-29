@@ -1,4 +1,4 @@
-import { LBVoteModalStore, selectedUserStore } from "@/store";
+import { LBVoteModalStore, selectedUserStore, useSelectedTabStore } from "@/store";
 import React, { useEffect, useState } from "react";
 import {
   Dialog,
@@ -23,6 +23,7 @@ function LBVoteModal({ voteACandidate, setComment }: props) {
   } = LBVoteModalStore();
   const { selectedVoteUser, setSelectedVoteUser } = selectedUserStore();
   const [activeElection, setActiveElection] = useState<any>();
+  const {setSelectedTab,selectedTab} = useSelectedTabStore();
 
   const handleModalChange = () => {
     setSelectedVoteUser(null);
@@ -54,7 +55,7 @@ function LBVoteModal({ voteACandidate, setComment }: props) {
 
   const handleSubmit = async () => {
     try {
-      voteACandidate(selectedVoteUser.userId);
+      voteACandidate(selectedVoteUser.userId,selectedTab);
     } catch (error) {
       console.log(error);
     }

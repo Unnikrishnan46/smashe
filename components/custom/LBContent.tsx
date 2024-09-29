@@ -6,7 +6,7 @@ import PositionBadgeMain from "./PositionBadgeMain";
 import LBSearch from "./LBSearch";
 import LBTable from "./LBTable";
 import LBSelectMenu from "./LBSelectMenu";
-import { useSearchStore } from "@/store";
+import { useSearchStore, useSelectedTabStore } from "@/store";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ShowCaseWinners from "./ShowCaseWinners";
 import GoodTabContent from "./GoodTabContent";
@@ -14,25 +14,39 @@ import EvilTabContent from "./EvilTabContent";
 import NoElections from "./NoElections";
 
 type props = {
-  allUsers: any;
-  activeElection: any;
+  allGoodUsers:any;
+  allEvilUsers: any;
+  activeElectionGood: any;
+  activeElectionEvil:any;
   getComments: any;
   previousTopTen: any;
   topTenOfAllTime: any;
   topTenEvilUsers:any;
+  previousGoodElectionWinner:any;
+  previousEvilElectionWinner:any;
+  topTenOfAllTimeGood:any;
+  topTenOfAllTimeEvil:any;
 };
 
 function LBContent({
-  allUsers,
-  activeElection,
+  allGoodUsers,
+  allEvilUsers,
   getComments,
   previousTopTen,
   topTenOfAllTime,
-  topTenEvilUsers
+  topTenEvilUsers,
+  activeElectionGood,
+  activeElectionEvil,
+  previousGoodElectionWinner,
+  previousEvilElectionWinner,
+  topTenOfAllTimeGood,
+  topTenOfAllTimeEvil
 }: props) {
   const [timeLeft, setTimeLeft] = useState<string>("00:00:00");
+  const [timeLeftGood, setTimeLeftGood] = useState<string>("00:00:00");
+  const [timeLeftEvil, setTimeLeftEvil] = useState<string>("00:00:00");
   const [twitterUsers, setTwitterUsers] = useState<any[]>([]);
-  const { searchInput } = useSearchStore();
+  const {setSelectedTab,selectedTab} = useSelectedTabStore();
   const formatTimeLeft = (timeLeft: any) => {
     const hours = String(Math.floor(timeLeft / 3600)).padStart(2, "0");
     const minutes = String(Math.floor((timeLeft % 3600) / 60)).padStart(2, "0");
@@ -42,22 +56,44 @@ function LBContent({
   
 
   useEffect(() => {
-    if (activeElection?.toDate) {
-      const endDate = new Date(activeElection.toDate).getTime();
+    if (activeElectionGood?.toDate) {
+      const endDate = new Date(activeElectionGood.toDate).getTime();
       const interval = setInterval(() => {
         const now = new Date().getTime();
         const timeDiff = endDate - now;
 
         if (timeDiff <= 0) {
           clearInterval(interval);
-          setTimeLeft("00:00:00");
+          setTimeLeftGood("00:00:00");
         } else {
-          setTimeLeft(formatTimeLeft(Math.floor(timeDiff / 1000)));
+          setTimeLeftGood(formatTimeLeft(Math.floor(timeDiff / 1000)));
         }
       }, 1000);
+
       return () => clearInterval(interval);
     }
-  }, [activeElection]);
+  }, [activeElectionGood]);
+
+
+  useEffect(() => {
+    if (activeElectionEvil?.toDate) {
+      const endDate = new Date(activeElectionEvil.toDate).getTime();
+      const interval = setInterval(() => {
+        const now = new Date().getTime();
+        const timeDiff = endDate - now;
+
+        if (timeDiff <= 0) {
+          clearInterval(interval);
+          setTimeLeftEvil("00:00:00");
+        } else {
+          setTimeLeftEvil(formatTimeLeft(Math.floor(timeDiff / 1000)));
+        }
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [activeElectionEvil]);
+
 
   const fetchTwitterUsers = async (searchQuery:string) => {
     try {
@@ -76,14 +112,19 @@ function LBContent({
       }
 
       const data = await response.json();
+      const updatedData = {
+        ...data.data,
+        profile_image_url: data.data.profile_image_url.replace('_normal', ''), // Remove '_normal' for high-quality image
+      };
       console.log(data);
 
-      setTwitterUsers([data.data]);
+      setTwitterUsers([updatedData]);
     } catch (error) {
       console.error("Error fetching Twitter users:", error);
     }
   };
 
+  // console.log("activeElection  :  ",activeElection);
   
 
   return (
@@ -93,7 +134,7 @@ function LBContent({
           <div
             className={`bg-[#502A29] ${imfell400.className} justify-center flex items-center p-4 flex-col rounded-sm max-lg:w-full max-lg:p-1`}
           >
-            <p className="text-[#FFD599] text-xl">{timeLeft}</p>
+            <p className="text-[#FFD599] text-xl">{selectedTab === "good" ? timeLeftGood : timeLeftEvil}</p>
             <p className="text-[#EAE5DA] text-xs">time left for weekly vote</p>
           </div>
           <LBSelectMenu />
@@ -111,6 +152,10 @@ function LBContent({
           <ShowCaseWinners
             data={previousTopTen[0]}
             topTenOfAllTime={topTenOfAllTime}
+            previousGoodElectionWinner={previousGoodElectionWinner}
+            previousEvilElectionWinner={previousEvilElectionWinner}
+            topTenOfAllTimeGood={topTenOfAllTimeGood}
+            topTenOfAllTimeEvil={topTenOfAllTimeEvil}
           />
           {/* <LBFlagBanner
             name={previousTopTen[0]?.name}
@@ -136,7 +181,7 @@ function LBContent({
         />
       </div> */}
       <div className="max-sm:mt-44 mt-12">
-        <Tabs defaultValue="good" className="w-full mt-8">
+        <Tabs defaultValue="good" onValueChange={(value) => setSelectedTab(value)} className="w-full mt-8">
           <div className="flex justify-center items-center">
             <TabsList
               className={`bg-black/20 ${imfell400.className} w-40 scale-125`}
@@ -145,26 +190,26 @@ function LBContent({
                 GOOD
               </TabsTrigger>
               <TabsTrigger className="w-full" value="evil">
-                EVil
+                EVIl
               </TabsTrigger>
             </TabsList>
           </div>
           <TabsContent className="w-full" value="good">
-            {activeElection?.electionMode === "evil" || activeElection == null ? <NoElections electionMode={"Good"}/> : 
+            {activeElectionGood ? 
             <GoodTabContent
-              allUsers={allUsers}
-              activeElection={activeElection}
+              allUsers={allGoodUsers}
+              activeElection={activeElectionGood}
               getComments={getComments}
               fetchTwitterUsers={fetchTwitterUsers}
               twitterUsers={twitterUsers}
               topTenOfAllTime={topTenOfAllTime}
-            />}
+            /> : <NoElections electionMode={"Good"}/>}
           </TabsContent>
           <TabsContent value="evil">
-          {activeElection?.electionMode === "evil" ?
+          {activeElectionEvil ?
             <EvilTabContent
-              allUsers={allUsers}
-              activeElection={activeElection}
+              allUsers={allEvilUsers}
+              activeElection={activeElectionEvil}
               getComments={getComments}
               fetchTwitterUsers={fetchTwitterUsers}
               twitterUsers={twitterUsers}

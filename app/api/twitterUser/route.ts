@@ -17,15 +17,11 @@ export async function POST(request: Request) {
         },
       }
     );
-    
-    console.log(twitterResponse);
 
     if (twitterResponse.status === 429) {
       const rateLimitReset = twitterResponse.headers.get('x-rate-limit-reset');
       const resetTime = rateLimitReset ? parseInt(rateLimitReset, 10) * 1000 : Date.now() + 60000; // default 1 min
       const retryAfter = new Date(resetTime).toISOString();
-
-      console.log(`Rate limited. Retry after: ${retryAfter}`);
 
       return NextResponse.json({
         error: 'Rate limit exceeded. Please try again later.',

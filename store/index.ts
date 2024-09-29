@@ -80,3 +80,8 @@ export const useSearchStore = create<SearchState>((set) => ({
   searchInput: '',
   setSearchInput: (input: string) => set({ searchInput: input }),
 }));
+
+export const useSelectedTabStore = create<any>((set:any) => ({
+  selectedTab: 'good',
+  setSelectedTab: (tab: string) => set({ selectedTab: tab}),
+}));

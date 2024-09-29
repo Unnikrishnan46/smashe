@@ -1,4 +1,4 @@
-import { LBTopTenStore } from "@/store";
+import { LBTopTenStore, useSelectedTabStore } from "@/store";
 import React, { useRef } from "react";
 import { Dialog, DialogContent, DialogFooter } from "../ui/dialog";
 import { imfell400 } from "@/utils/fonts";
@@ -9,10 +9,14 @@ import html2canvas from "html2canvas";
 
 type props = {
   allUsers: any;
+  previousTopTenGood:any;
+  previousTopTenEvil:any;
 };
 
-function TopTenModal({ allUsers }: props) {
+function TopTenModal({ allUsers,previousTopTenGood,previousTopTenEvil }: props) {
   const { isLBTopTenModalOpen, setIsLBTopTenModalOpen } = LBTopTenStore();
+  const {setSelectedTab,selectedTab} = useSelectedTabStore();
+
   const handleModalChange = () => {
     setIsLBTopTenModalOpen(false);
   };
@@ -36,9 +40,14 @@ function TopTenModal({ allUsers }: props) {
     downloadjs(dataURL, "download.png", "image/png");
   };
 
-  const sortedUsers = [...allUsers]
+  const sortedGoodUsers = [...previousTopTenGood]
     .sort((a, b) => (b.votes || 0) - (a.votes || 0))
     .slice(0, 10);
+
+    
+  const sortedEvilUsers = [...previousTopTenEvil]
+  .sort((a, b) => (b.votes || 0) - (a.votes || 0))
+  .slice(0, 10);
 
   return (
     <Dialog open={isLBTopTenModalOpen} onOpenChange={handleModalChange}>
@@ -73,8 +82,9 @@ function TopTenModal({ allUsers }: props) {
                   <th className="w-1/3 text-center">weekly votes</th>
                 </tr>
               </thead>
-              <tbody>
-                {sortedUsers?.map((item, index) => {
+              {selectedTab === "good" && (
+                <tbody>
+                {sortedGoodUsers?.map((item, index) => {
                   // Define the background color based on the index
                   let bgColor = "";
                   if (index === 0) {
@@ -108,6 +118,44 @@ function TopTenModal({ allUsers }: props) {
                   );
                 })}
               </tbody>
+              )}
+              {selectedTab === "evil" && (
+                <tbody>
+                {sortedEvilUsers?.map((item, index) => {
+                  // Define the background color based on the index
+                  let bgColor = "";
+                  if (index === 0) {
+                    bgColor = "#D87000"; // First row
+                  } else if (index === 1) {
+                    bgColor = "#7787A6"; // Second row
+                  } else if (index === 2) {
+                    bgColor = "#5B2928"; // Third row
+                  } else {
+                    // For the rest of the rows, alternate between #414434 and #4A3B34
+                    bgColor = index % 2 === 0 ? "#4A3B34" : "#414434";
+                  }
+
+                  return (
+                    <tr
+                      key={index}
+                      className={`text-[#FFD599]`}
+                      style={{ backgroundColor: bgColor }} // Apply the background color
+                    >
+                      <td className="text-center">{index + 1}</td>
+                      <td className="font-medium flex items-center gap-4 text-center">
+                        <img
+                          className="h-10 w-10 p-1"
+                          src={item?.photoUrl}
+                          alt=""
+                        />
+                        {item?.name}
+                      </td>
+                      <td className="text-center">{item.votes}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+              )}
             </table>
             <Button
               onClick={handleCaptureClick}

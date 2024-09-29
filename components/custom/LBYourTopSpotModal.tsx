@@ -1,5 +1,5 @@
 "use client"
-import { LBYourTopSpotStore } from "@/store";
+import { LBYourTopSpotStore, useSelectedTabStore } from "@/store";
 import React, { useRef } from "react";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { imfell400 } from "@/utils/fonts";
@@ -10,15 +10,18 @@ import html2canvas from 'html2canvas';
 
 type props = {
   previousTopTen:any;
+  previousGoodElectionWinner:any;
+  previousEvilElectionWinner:any;
 }
 
 
-function LBYourTopSpotModal({previousTopTen}:props) {
+function LBYourTopSpotModal({previousTopTen,previousGoodElectionWinner,previousEvilElectionWinner}:props) {
   const { isLBYourTopSpotModalOpen, setIsLBYourTopSpotModalOpen } =
     LBYourTopSpotStore();
   const handleModalChange = () => {
     setIsLBYourTopSpotModalOpen(false);
   };
+  const {setSelectedTab,selectedTab} = useSelectedTabStore();
 
   const divRef = useRef(null);
   const downloadBtnRef = useRef(null);
@@ -46,7 +49,7 @@ function LBYourTopSpotModal({previousTopTen}:props) {
           <div
             className={`flex flex-col justify-center items-center ${imfell400.className}`}
           >
-            <h1 className="text-white text-lg">{previousTopTen[0]?.name}</h1>
+            <h1 className="text-white text-lg">{selectedTab === "good" ? previousGoodElectionWinner?.userName :previousEvilElectionWinner?.userName}</h1>
             <h3 className="text-white opacity-75 text-sm m-0">
               Reigning Weekly Winner
             </h3>
@@ -58,7 +61,7 @@ function LBYourTopSpotModal({previousTopTen}:props) {
               />
               <img
                 className="absolute h-24 w-24 -z-10 top-[30%] bottom-[70%]"
-                src={previousTopTen[0]?.photoUrl}
+                src={selectedTab === "good" ? previousGoodElectionWinner?.photoUrl :previousEvilElectionWinner?.photoUrl }
                 alt=""
               />
             </div>
