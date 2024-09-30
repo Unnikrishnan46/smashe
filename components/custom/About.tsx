@@ -62,10 +62,10 @@ function About() {
   return (
     <div
       ref={aboutMainRef}
-      className={`bg-[url(/images/what.png)] max-sm:bg-[url(/images/aboutBGMobile.png)] h-[150vh] max-sm:h-[160vh] bg-cover bg-no-repeat -mt-7 w-full relative z-40 max-[400px]:h-[137vh] min-[1200px]:h-[180vh] min-[1400px]:-mt-10 max max-sm:-mt-9 aboutSection`}
+      className={`bg-[url(/images/what.png)] max-sm:bg-[url(/images/aboutBGMobile.png)] h-[150vh] max-sm:h-[160vh] bg-cover bg-no-repeat -mt-7 w-full relative z-40 max-[400px]:h-[137vh] min-[1200px]:h-[150vh] min-[1400px]:-mt-10 max max-sm:-mt-9 aboutSection`}
     >
       <div className="w-full h-full justify-center items-center flex flex-col">
-        <div className="w-full justify-center items-center flex flex-col max-sm:px-8">
+        <div className="w-full justify-center items-center flex flex-col max-sm:px-8 mb-4">
           <h1
             className={`text-8xl max-sm:text-6xl max-[400px]:text-5xl ${imfell400.className} text-[#EAE5DA] about-heading`}
           >
@@ -77,12 +77,12 @@ function About() {
           <div className="w-1/2 max-sm:w-full max-sm:justify-center max-[850px]:!items-center max-[850px]:flex max-sm:flex max-[850px]:w-full max-[850px]:justify-center">
             <img
               className="ml-16 max-sm:hidden max-[850px]:w-[20rem] max-[850px]:ml-0 about-card-img "
-              src="/images/aboutCards.png"
+              src="/images/newAboutSectionImg.png"
               alt="card"
             />
             <img
-              className="hidden max-sm:flex max-[400px]:w-3/4 about-card-img"
-              src="/images/aboutCards2.png"
+              className="hidden max-sm:flex max-[400px]:w-3/4 about-card-img max-sm:mb-4"
+              src="/images/newAboutSectionImg.png"
               alt="card"
             />
           </div>
