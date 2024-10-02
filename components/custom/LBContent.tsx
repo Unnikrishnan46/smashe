@@ -95,34 +95,40 @@ function LBContent({
   }, [activeElectionEvil]);
 
 
-  const fetchTwitterUsers = async (searchQuery:string) => {
+  const fetchTwitterUsers = async (searchQuery: string) => {
     try {
+      // Remove "@" if it exists at the beginning of the searchQuery
+      const sanitizedQuery = searchQuery.startsWith("@") 
+        ? searchQuery.slice(1) 
+        : searchQuery;
+  
       const response = await fetch(`/api/twitterUser`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username: searchQuery }),
+        body: JSON.stringify({ username: sanitizedQuery }),
       });
-
+  
       if (!response.ok) {
         throw new Error(
           `Failed to fetch Twitter users: ${response.statusText}`
         );
       }
-
+  
       const data = await response.json();
       const updatedData = {
         ...data.data,
         profile_image_url: data.data.profile_image_url.replace('_normal', ''), // Remove '_normal' for high-quality image
       };
       console.log(data);
-
+  
       setTwitterUsers([updatedData]);
     } catch (error) {
       console.error("Error fetching Twitter users:", error);
     }
   };
+  
 
   // console.log("activeElection  :  ",activeElection);
   
